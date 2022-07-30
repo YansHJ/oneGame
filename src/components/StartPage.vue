@@ -109,12 +109,9 @@ export default {
       }
     },
     jumpToStart(){
-      this.tipsInfoFlag = true
-      this.tipsInfo = 'tips:开发中，敬请期待(v50加快进度)'
-      setTimeout(() =>{
-        this.tipsInfo = ''
-        this.tipsInfoFlag = false
-      },3000)
+      this.$router.push({
+        path:'/guidance'
+      })
     }
   }
 }
@@ -135,7 +132,7 @@ export default {
   text-align: center;
 }
 .introduce {
-  margin: 0 auto;
+  margin: 5rem auto;
   text-align: center;
 }
 .startPage {

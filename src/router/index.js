@@ -10,7 +10,7 @@ export default new Router({
     {
       path: '/',
       name: 'StartPage',
-      component: GuidancePage
+      component: StartPage
     },{
       path: '/guidance',
       name: 'guidance',
