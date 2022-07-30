@@ -43,7 +43,7 @@
     </div>
 <!--    介绍界面-->
     <div class="introduce" v-show="introducePageShow">
-      <div class="gameName">
+      <div class="introduceInfo">
         <span style="font-size: 20px;padding: 0 30px 0 30px">{{introduceInfo}}</span>
       </div>
       <div class="startButton" v-show="startButtonShow">
