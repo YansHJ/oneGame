@@ -8,23 +8,24 @@
 <!--    开始界面-->
     <div class="startPage" v-show="startPageShow">
     <div class="gameName">
-      <span style="font-size: 30px">《一个肉鸽游戏》</span>
+      <span style="font-size: 30px">《一个游戏》</span>
     </div>
     <div class="startButton">
       <v-btn
         elevation="2"
         outlined
-        @click="startPageShow = false;changeNamePageShow = true"
+        @click="startPageShow = false;changeNamePageShow = true;nameInput = true"
       >开始游戏</v-btn>
     </div>
     </div>
 <!--    命名界面-->
     <div class="changeName" v-show="changeNamePageShow">
       <div class="gameName">
-        <span style="font-size: 30px">勇者,你的名字是...</span>
+        <span style="font-size: 30px">转生之人,你的名字是...</span>
       </div>
       <div class="nameInput">
         <input
+          v-show="nameInput"
           v-model="braveName"
           style="border-radius: 15px;
           width: 300px;
@@ -69,7 +70,8 @@ export default {
       tipsInfoFlag:false,
       introduceInfo:'',
       startButtonShow:false,
-      changeNameButton:true
+      changeNameButton:true,
+      nameInput: false
     }
   },
   created() {
@@ -77,6 +79,7 @@ export default {
   methods :{
     changeName(){
       this.changeNameButton = false
+      this.nameInput = false
       if (this.braveName === ''){
         this.tipsInfoFlag = true
         this.tipsInfo = '获得新成就：无名英雄'
@@ -95,14 +98,14 @@ export default {
       }
     },
     printIntroduce(){
-      const str = '欢迎你,冒险者 ' + this.braveName + ' ,这是一个没有想好世界观的世界,你的到来肯定会为我们带来希望,没有公主需要拯救,你的目标就是打败魔王,不断变强,称霸世界(成为魔王)';
+      const str = '机械声音:欢迎你,重生者' + this.braveName + ',这是一个没有想好世界观的世界,你的到来肯定会为我们带来希望,没有公主需要拯救,你的目标就是打败魔王,不断变强,称霸世界(成为魔王)';
       let i = 0;
       this.typing(i,str)
     },
     typing(i,str){
       if(i<= str.length){
         this.introduceInfo = str.slice(0,i++) + "_";
-        setTimeout(() =>{this.typing(i,str);},200)
+        setTimeout(() =>{this.typing(i,str);},150)
       }else{
         this.introduceInfo = str;
         this.startButtonShow = true
@@ -112,6 +115,7 @@ export default {
       this.$router.push({
         path:'/guidance'
       })
+      localStorage.setItem("roleName",this.braveName)
     }
   }
 }

@@ -11,7 +11,7 @@
         <span style="font-size: 20px;padding: 0 30px 0 30px">{{introduceInfo}}</span>
       </div>
       <div class="changeSex" v-show="changeSexPageShow">
-        <div class="sex" style="width: 200px;margin: 0 auto;padding: 0 0 0 5%">
+        <div class="sex" style="width: 300px;margin: 0 auto;padding: 0 0 0 5rem">
           <v-radio-group
             v-model="roleSex"
             row>
@@ -66,35 +66,43 @@ export default {
   },
   methods :{
     printIntroduce(){
-      const str = '你终于醒了,你已经重生并且穿越到这个新的世界了,快看看你现在的身体';
+      const str = '啊！你终于醒了,我看你一个人躺在这里昏迷好久了,对了,忘了自我介绍了,我是...这不重要，你快看看你现在的身体...';
       let i = 0;
       this.typing(i,str,true)
     },
     printIntroduce2(){
       this.changeSexPageShow = false
-      const str = '可以的';
+      let str = ''
+      if (this.roleSex === 'man'){
+        str = '你现在是一个肌肉猛男！,战力肯定很高吧....或许一会...没事没事..对了,这里有一些之前剩下来的武器,你挑一件吧,为了一会的..防身,对,防身'
+      }else if (this.roleSex === 'woman'){
+        str = '异世界的少女!或许,会有神奇的力量来应对接下来的....对了,这里有一些武器,你要不要选一个,我比较推荐那个魔法棒,虽然不知道怎么来的,但是好看就对了'
+      }
       let i = 0;
       this.typing(i,str,false)
     },
     typing(i,str,sex){
       if(i<= str.length){
         this.introduceInfo = str.slice(0,i++) + "_";
-        setTimeout(() =>{this.typing(i,str,sex);},200)
+        setTimeout(() =>{this.typing(i,str,sex);},150)
       }else{
         this.introduceInfo = str;
         console.log(sex)
         if (sex === true){
           this.changeSexPageShow = !this.changeSexPageShow
         }
+        if (this.roleSex !== ''){
+          this.jumpToChangeWeapon()
+        }
       }
     },
-    jumpToStart(){
-      this.tipsInfoFlag = true
-      this.tipsInfo = 'tips:开发中，敬请期待(v50加快进度)'
+    jumpToChangeWeapon(){
       setTimeout(() =>{
-        this.tipsInfo = ''
-        this.tipsInfoFlag = false
-      },3000)
+       this.$router.push({
+         path: '/ChangeWeapon'
+       })
+        localStorage.setItem("roleSex",this.roleSex)
+      },2500)
     }
   }
 }
