@@ -29,7 +29,45 @@
         <span style="margin: 3rem auto;color: red">123</span>
       </div>
     </div>
-
+<!--    卡牌-->
+    <div class="cardArea">
+      <v-btn
+          elevation="14"
+          outlined
+          x-large
+          class="card1"
+      >{{ list[0].name}}</v-btn>
+      <v-btn
+        elevation="14"
+        outlined
+        x-large
+        class="card1"
+    >{{ list[2].name}}</v-btn>
+      <v-btn
+        elevation="14"
+        outlined
+        x-large
+        class="card1"
+    >{{ list[3].name}}</v-btn>
+      <v-btn
+        elevation="14"
+        outlined
+        x-large
+        class="card1"
+    >{{ list[4].name}}</v-btn>
+      <v-btn
+        elevation="14"
+        outlined
+        x-large
+        class="card1"
+    >{{ list[5].name}}</v-btn>
+      <v-btn
+          elevation="14"
+          outlined
+          x-large
+          class="card1"
+      >{{ list[6].name}}</v-btn>
+    </div>
     <div class="roleState">
       <div>
         <span style="margin-left: 2rem">HP:{{ HP }}/{{ totalHp }}</span>
@@ -52,7 +90,15 @@ export default {
       armor:'345',
       totalHp:'300',
       absoluteHp:'12',
-      monsterName:'哥布林'
+      monsterName:'1',
+      list:[
+        {id: 1,name: '普攻'},
+        {id: 2,name: '盾击'},
+        {id: 3,name: '治疗'},
+        {id: 4,name: '大招'},
+        {id: 5,name: '闪避'},
+        {id: 6,name: '撞死'}
+      ]
 
     }
   },
@@ -105,14 +151,25 @@ export default {
 }
 .battlePage {
   background-color: aquamarine;
-  margin: 10%;
-  height: 26rem;
+  margin-top: 10%;
+  height: 18rem;
 }
 .battleInfo {
   border: 1px black;
   width: 70%;
-  height: 20rem;
+  height: 15rem;
   background-color: black;
   margin: 0 auto;
+}
+.cardArea {
+  margin: 4rem auto;
+  width: 90%;
+  height: 10rem;
+  /*display: flex;*/
+}
+.card1 {
+  height: 17rem;
+  width: 10%;
+  margin: 1rem 2% 1rem 2%;
 }
 </style>
