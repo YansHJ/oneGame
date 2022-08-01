@@ -101,12 +101,9 @@ export default {
       }
     },
     jumpToStart(){
-      this.tipsInfoFlag = true
-      this.tipsInfo = 'tips:开发中，敬请期待(v50加快进度)'
-      setTimeout(() =>{
-        this.tipsInfo = ''
-        this.tipsInfoFlag = false
-      },3000)
+      this.$router.push({
+        path:'/battle'
+      })
     },
     fail(){
       this.$router.push({

@@ -12,61 +12,57 @@
     </v-snackbar>
 <!--    怪物状态-->
     <div class="monsterState">
-      <v-progress-linear v-model="absoluteHp" color="red"></v-progress-linear>
+      <v-progress-linear v-model="monsterAbsoluteHp" color="red"></v-progress-linear>
       <span style="margin-left: 2rem">{{ monsterName }}</span>
-      <span style="margin-left: 2rem">HP:{{ HP }}/{{ totalHp }}</span>
+      <span style="margin-left: 2rem">HP:{{ monsterHP }}/{{ totalHp }}</span>
       <span style="margin-left: 2rem">护甲:{{ armor }}</span>
     </div>
-    <div class="monsterState">
-      <v-progress-linear v-model="absoluteHp" color="red"></v-progress-linear>
-      <span style="margin-left: 2rem">{{ monsterName }}</span>
-      <span style="margin-left: 2rem">HP:{{ HP }}/{{ totalHp }}</span>
-      <span style="margin-left: 2rem">护甲:{{ armor }}</span>
-    </div>
+    <v-btn
+      elevation="2"
+      outlined
+      @click="refresh"
+    >洗牌</v-btn>
 <!--    战斗-->
     <div class="battlePage">
       <div class="battleInfo">
-        <span style="margin: 3rem auto;color: red">123</span>
+<!--        <span style="margin: 3rem auto;color: red">{{ battleInfo }}</span>-->
+        <v-textarea
+          outlined
+          name="input-7-4"
+          label="战斗信息"
+          value=""
+          v-model="battleInfo"
+          style="height: 500px"
+        ></v-textarea>
       </div>
     </div>
 <!--    卡牌-->
     <div class="cardArea">
-      <v-btn
-          elevation="14"
-          outlined
-          x-large
-          class="card1"
-      >{{ list[0].name}}</v-btn>
-      <v-btn
-        elevation="14"
-        outlined
-        x-large
-        class="card1"
-    >{{ list[2].name}}</v-btn>
-      <v-btn
-        elevation="14"
-        outlined
-        x-large
-        class="card1"
-    >{{ list[3].name}}</v-btn>
-      <v-btn
-        elevation="14"
-        outlined
-        x-large
-        class="card1"
-    >{{ list[4].name}}</v-btn>
-      <v-btn
-        elevation="14"
-        outlined
-        x-large
-        class="card1"
-    >{{ list[5].name}}</v-btn>
-      <v-btn
-          elevation="14"
-          outlined
-          x-large
-          class="card1"
-      >{{ list[6].name}}</v-btn>
+        <v-slide-group
+          v-model="battleInfo"
+          class="pa-4"
+          center-active
+          style="text-align: center"
+        >
+          <v-slide-item
+            v-for="(item,n) in list"
+            :key="n"
+          >
+            <v-card
+              class="ma-4"
+              height="9rem"
+              width="100"
+              @click="attack(item)"
+            ><v-img
+              height="30px"
+              src="https://s4.ax1x.com/2021/12/14/ovKMzd.jpg"
+            />
+              <p>{{ item.name }}</p>
+              <p>数值:{{ item.value }}</p>
+              <p>概率:{{ item.probability }}</p>
+            </v-card>
+          </v-slide-item>
+        </v-slide-group>
     </div>
     <div class="roleState">
       <div>
@@ -79,6 +75,8 @@
 </template>
 
 <script>
+import {getCard} from "../api/get";
+
 export default {
   data () {
     return {
@@ -86,26 +84,42 @@ export default {
       tipsInfoFlag:false,
       snackbar:false,
       noticeInfo:'',
-      HP:'123',
+      HP:'276',
       armor:'345',
       totalHp:'300',
-      absoluteHp:'12',
-      monsterName:'1',
-      list:[
-        {id: 1,name: '普攻'},
-        {id: 2,name: '盾击'},
-        {id: 3,name: '治疗'},
-        {id: 4,name: '大招'},
-        {id: 5,name: '闪避'},
-        {id: 6,name: '撞死'}
-      ]
+      absoluteHp:'85',
+      monsterName:'哥布林',
+      monsterHP:'300',
+      monsterAbsoluteHp:'100',
+      list:[],
+      battleInfo:''
 
     }
   },
   created() {
-
+    this.getCardByNum()
   },
   methods :{
+    refresh(){
+      getCard(7).then(res => {
+        this.list = res.data.data
+      })
+    },
+    attack(item){
+      this.battleInfo = this.battleInfo + localStorage.getItem('roleName') + "使用了" + item.name + '--\n'
+      if (item.type === 1){
+        this.monsterHP = this.monsterHP - item.value
+        if (this.monsterHP <= 0){
+          this.monsterHP = this.totalHp
+        }
+        this.monsterAbsoluteHp = this.monsterHP / (this.totalHp / 100)
+      }
+    },
+    getCardByNum(){
+      getCard(7).then(res => {
+        this.list = res.data.data
+      })
+    },
     printIntroduce(){
       this.snackbar = true
       this.weaponShow = false
@@ -150,26 +164,20 @@ export default {
   bottom: 0;
 }
 .battlePage {
-  background-color: aquamarine;
+  /*border: 1px solid black;*/
   margin-top: 10%;
   height: 18rem;
 }
 .battleInfo {
-  border: 1px black;
+  /*border: 1px solid black;*/
   width: 70%;
-  height: 15rem;
-  background-color: black;
+  height: 10rem;
   margin: 0 auto;
 }
 .cardArea {
-  margin: 4rem auto;
+  margin: 2rem auto;
   width: 90%;
-  height: 10rem;
-  /*display: flex;*/
-}
-.card1 {
   height: 17rem;
-  width: 10%;
-  margin: 1rem 2% 1rem 2%;
+  /*display: flex;*/
 }
 </style>
