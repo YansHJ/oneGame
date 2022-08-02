@@ -127,7 +127,7 @@ export default {
         this.countDown = 10
         if (b){
           if (this.list.length < 8){
-            this.getCardByNum(8 - this.list.length)
+            this.getCardByNum(2)
           }
           this.snackbar = true
           this.noticeInfo = '你的回合'
@@ -202,10 +202,7 @@ export default {
     //抽牌
     getCardByNum(num){
       getCard(num).then(res => {
-        if(this.list.length !== 0){
-          this.list = this.list.concat(res.data.data)
-        }
-        this.list = res.data.data
+        this.list = this.list.concat(res.data.data)
       })
     },
     //文字
