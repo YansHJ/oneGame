@@ -10,12 +10,22 @@ export function loginLogin(username, password) {
     }
   })
 }
-// 登录
+// 抽卡
 export function getCard(quantity) {
   return service.get('/card/getInitCard', {
     headers: { 'Content-Type': 'application/json' },
     params: {
       quantity: quantity
+    }
+  })
+}
+
+// 抽卡
+export function getRole(id) {
+  return service.get('/playerRole/getRole', {
+    headers: { 'Content-Type': 'application/json' },
+    params: {
+      id: id
     }
   })
 }

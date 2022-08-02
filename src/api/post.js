@@ -14,3 +14,15 @@ export function createMsg (token,obj) {
     }
   })
 }
+
+//生成文字分享 （同时在params及body中携带参数）
+export function initRole (role) {
+  return service.post('/playerRole/initRole', JSON.stringify(role), {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    params: {
+      playerRole: role
+    }
+  })
+}

@@ -22,6 +22,7 @@
       outlined
       @click="refresh"
     >洗牌</v-btn>
+    <h4>倒计时：{{ countDown }}</h4>
 <!--    战斗-->
     <div class="battlePage">
       <div class="battleInfo">
@@ -31,6 +32,7 @@
           name="input-7-4"
           label="战斗信息"
           value=""
+          disabled
           v-model="battleInfo"
           style="height: 500px"
         ></v-textarea>
@@ -52,30 +54,33 @@
               class="ma-4"
               height="9rem"
               width="100"
-              @click="attack(item)"
+              @click="attack(item,n)"
             ><v-img
               height="30px"
               src="https://s4.ax1x.com/2021/12/14/ovKMzd.jpg"
             />
-              <p>{{ item.name }}</p>
-              <p>数值:{{ item.value }}</p>
-              <p>概率:{{ item.probability }}</p>
+              <h5 v-bind:style="item.color">{{ item.name }}</h5>
+              <h3 style="color: red">{{ item.value }}</h3>
+              <h6>{{ item.describe }}</h6>
             </v-card>
           </v-slide-item>
         </v-slide-group>
     </div>
     <div class="roleState">
       <div>
-        <span style="margin-left: 2rem">HP:{{ HP }}/{{ totalHp }}</span>
-        <span style="margin-left: 2rem">护甲:{{ armor }}</span>
+        <span style="margin-left: 2rem">{{ role.name }}</span>
+        <span style="margin-left: 2rem">HP:{{ attribute.baseHealth }}/{{ attribute.maxHealth }}</span>
+        <span style="margin-left: 2rem">护甲:{{ attribute.baseArmor }}</span>
       </div>
-      <v-progress-linear v-model="absoluteHp" color="red"></v-progress-linear>
+      <v-progress-linear v-model="roleAbsoluteHp" color="red"></v-progress-linear>
     </div>
   </div>
 </template>
 
 <script>
 import {getCard} from "../api/get";
+import {initRole} from "../api/post";
+import {getRole} from "../api/get";
 
 export default {
   data () {
@@ -84,28 +89,97 @@ export default {
       tipsInfoFlag:false,
       snackbar:false,
       noticeInfo:'',
-      HP:'276',
-      armor:'345',
-      totalHp:'300',
-      absoluteHp:'85',
+      roleAbsoluteHp:'',
       monsterName:'哥布林',
-      monsterHP:'300',
+      monsterHP:'400',
+      totalHp:'400',
       monsterAbsoluteHp:'100',
       list:[],
-      battleInfo:''
-
+      battleInfo:'',
+      role:{
+        id:'',
+        name:'',
+        type:'',
+        attributeId:'',
+        userId:'',
+        createTime:'',
+        sex:''
+      },
+      attribute:{
+        id:'',
+        baseAttack:'',
+        baseHealth:'',
+        maxHealth:'',
+        baseArmor:'',
+      },
+      countDown:10
     }
   },
   created() {
-    this.getCardByNum()
+    this.getCardByNum(8)
+    this.initRoleMethods()
+    this.roundCountdown()
   },
   methods :{
+    roundCountdown(){
+      let b = true
+      setInterval(() =>{
+        this.countDown = 10
+        if (b){
+          if (this.list.length < 8){
+            this.getCardByNum(8 - this.list.length)
+          }
+          this.snackbar = true
+          this.noticeInfo = '你的回合'
+          setInterval(() =>{
+            this.countDown = this.countDown - 1
+          },1000)
+          b = !b
+        }else {
+          this.snackbar = true
+          this.noticeInfo = '你受到了未知力量的攻击'
+          this.attribute.baseHealth = this.attribute.baseHealth -2
+          b = !b
+        }
+      },10000)
+    },
+    initRoleMethods(){
+      //本地无角色
+      if (!localStorage.getItem("localRoleId")){
+        this.role.sex = localStorage.getItem('roleSex')
+        this.role.name = localStorage.getItem('roleName')
+        initRole(this.role).then(res =>{
+          if (res.data.code !== 200){
+            this.noticeInfo = '网络异常'
+            this.snackbar = true
+          }else {
+            this.role = res.data.data
+            this.attribute = res.data.data.attribute
+            this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
+            localStorage.setItem("localRoleId",this.role.id)
+          }
+        })
+      }else {
+        getRole(localStorage.getItem("localRoleId")).then(res =>{
+          if (res.data.code !== 200){
+            this.noticeInfo = '网络异常'
+            this.snackbar = true
+          }else {
+            this.role = res.data.data
+            this.attribute = res.data.data.attribute
+            this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
+          }
+        })
+      }
+    },
+    //洗牌
     refresh(){
-      getCard(7).then(res => {
+      getCard(8).then(res => {
         this.list = res.data.data
       })
     },
-    attack(item){
+    //出牌
+    attack(item,n){
       this.battleInfo = this.battleInfo + localStorage.getItem('roleName') + "使用了" + item.name + '--\n'
       if (item.type === 1){
         this.monsterHP = this.monsterHP - item.value
@@ -113,13 +187,28 @@ export default {
           this.monsterHP = this.totalHp
         }
         this.monsterAbsoluteHp = this.monsterHP / (this.totalHp / 100)
+      }else if (item.type === 2){
+        this.attribute.baseHealth = this.attribute.baseHealth + item.value
+        if (this.attribute.baseHealth > this.attribute.maxHealth){
+          this.attribute.baseHealth = this.attribute.maxHealth
+        }
+        this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
+      }else if (item.type === 3){
+        this.attribute.baseArmor = this.attribute.baseArmor + item.value
       }
+      //删牌
+      this.list.splice(n,1)
     },
-    getCardByNum(){
-      getCard(7).then(res => {
+    //抽牌
+    getCardByNum(num){
+      getCard(num).then(res => {
+        if(this.list.length !== 0){
+          this.list = this.list.concat(res.data.data)
+        }
         this.list = res.data.data
       })
     },
+    //文字
     printIntroduce(){
       this.snackbar = true
       this.weaponShow = false
@@ -139,6 +228,7 @@ export default {
         },1500)
       }
     },
+    //跳转
     jumpToStart(){
       this.tipsInfoFlag = true
       this.tipsInfo = 'tips:开发中，敬请期待(v50加快进度)'
@@ -147,6 +237,7 @@ export default {
         this.tipsInfoFlag = false
       },3000)
     },
+    //GG
     fail(){
       this.$router.push({
         path:'/fail'

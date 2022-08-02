@@ -101,7 +101,12 @@ export default {
        this.$router.push({
          path: '/ChangeWeapon'
        })
-        localStorage.setItem("roleSex",this.roleSex)
+        if (this.roleSex === 'man'){
+          localStorage.setItem("roleSex",'0')
+        }else if (this.roleSex === 'woman'){
+          localStorage.setItem("roleSex",'1')
+        }
+
       },2500)
     }
   }
