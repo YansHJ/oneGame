@@ -13,16 +13,16 @@
 <!--    怪物状态-->
     <div class="monsterState">
       <v-progress-linear v-model="monsterAbsoluteHp" color="red"></v-progress-linear>
-      <span style="margin-left: 2rem">{{ monsterName }}</span>
-      <span style="margin-left: 2rem">HP:{{ monsterHP }}/{{ totalHp }}</span>
-      <span style="margin-left: 2rem">护甲:{{ armor }}</span>
+      <span style="margin-left: 2rem">{{ monster.name }}</span>
+      <span style="margin-left: 2rem">HP:{{ monster.baseHealth }}/{{ monster.maxHealth }}</span>
+      <span style="margin-left: 2rem">护甲:{{ monster.baseArmor }}</span>
     </div>
     <v-btn
       elevation="2"
       outlined
       @click="refresh"
+      v-show=false
     >洗牌</v-btn>
-    <h4>倒计时：{{ countDown }}</h4>
 <!--    战斗-->
     <div class="battlePage">
       <div class="battleInfo">
@@ -33,11 +33,21 @@
           label="战斗信息"
           value=""
           disabled
+
           v-model="battleInfo"
           style="height: 500px"
         ></v-textarea>
       </div>
+      <div style="float: right;margin-bottom: 2rem">
+        <v-btn
+          elevation="2"
+          outlined
+          @click="finishRound(2)"
+          v-show="endRound"
+        >结束回合</v-btn>
+      </div>
     </div>
+
 <!--    卡牌-->
     <div class="cardArea">
         <v-slide-group
@@ -81,6 +91,11 @@
 import {getCard} from "../api/get";
 import {initRole} from "../api/post";
 import {getRole} from "../api/get";
+import {initMonster} from "../api/get";
+import {attack} from "../api/get";
+import {heal} from "../api/get";
+import {increaseArmor} from "../api/get";
+import {underAttack} from "../api/get";
 
 export default {
   data () {
@@ -90,12 +105,22 @@ export default {
       snackbar:false,
       noticeInfo:'',
       roleAbsoluteHp:'',
-      monsterName:'哥布林',
-      monsterHP:'400',
-      totalHp:'400',
       monsterAbsoluteHp:'100',
       list:[],
       battleInfo:'',
+      monster:{
+        id:'',
+        name:'哥布林',
+        baseHealth:'400',
+        maxHealth:'400',
+        baseArmor:'100',
+        level:'',
+        type:'',
+      },
+      monsterSkill:{
+        name:'',
+        value:'',
+      },
       role:{
         id:'',
         name:'',
@@ -112,37 +137,66 @@ export default {
         maxHealth:'',
         baseArmor:'',
       },
-      countDown:10
+      whoRound:'',
+      endRound:true
     }
   },
   created() {
-    this.getCardByNum(8)
     this.initRoleMethods()
-    this.roundCountdown()
+    this.initMonsterMethods('10ac1904b1ca14b6')
+    this.getCardByNum(2)
+    this.yourRound()
   },
   methods :{
-    roundCountdown(){
-      let b = true
-      setInterval(() =>{
-        this.countDown = 10
-        if (b){
-          if (this.list.length < 8){
-            this.getCardByNum(2)
+    //初始化怪物
+    initMonsterMethods(id){
+      setTimeout(()=>{
+        initMonster(id,localStorage.getItem("localRoleId")).then(res =>{
+          if (res.data.code === 200){
+            this.monster = res.data.data
           }
-          this.snackbar = true
-          this.noticeInfo = '你的回合'
-          setInterval(() =>{
-            this.countDown = this.countDown - 1
-          },1000)
-          b = !b
-        }else {
-          this.snackbar = true
-          this.noticeInfo = '你受到了未知力量的攻击'
-          this.attribute.baseHealth = this.attribute.baseHealth -2
-          b = !b
-        }
-      },10000)
+        })
+      },500)
     },
+    yourRound(){
+      this.noticeInfo = '你的回合'
+      this.snackbar = true
+      this.getCardByNum(2)
+    },
+    finishRound(i){
+      if (i === 2){
+        this.endRound = false
+        this.whoRound = 2
+        this.monsterRound()
+      }else if (i === 1){
+        this.endRound = true
+        this.whoRound = 1
+        this.yourRound()
+      }
+    },
+    monsterRound(){
+      this.noticeInfo = this.monster.name + '要攻击了!'
+      this.snackbar = true
+      setTimeout(()=>{
+        underAttack(this.monster.id,this.role.id).then(res =>{
+          if (res.data.code === 200){
+            this.attribute = res.data.data.role.attribute
+            this.battleInfo = this.battleInfo + this.monster.name + "使用了" + res.data.data.monsterSkill.name +',造成了' + res.data.data.monsterSkill.value +  '伤害--\n'
+            this.finishRound(1)
+          }
+          if (res.data.code === 999){
+            console.log('很蓝的啦，已经结束了！')
+            this.noticeInfo = '你被击败了！'
+            this.snackbar = true
+            localStorage.removeItem("localRoleId")
+            this.$router.push({
+              path:'/fail'
+            })
+          }
+        })
+      },4000)
+    },
+    //初始化角色
     initRoleMethods(){
       //本地无角色
       if (!localStorage.getItem("localRoleId")){
@@ -169,41 +223,75 @@ export default {
             this.attribute = res.data.data.attribute
             this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
           }
+          if (res.data.code === 400){
+            localStorage.removeItem("localRoleId")
+            this.initRoleMethods()
+          }
         })
       }
     },
     //洗牌
     refresh(){
-      getCard(8).then(res => {
-        this.list = res.data.data
-      })
+      setTimeout(()=>{
+        getCard(8,localStorage.getItem("localRoleId")).then(res => {
+          this.list = res.data.data
+        })
+      },500)
+
     },
     //出牌
     attack(item,n){
-      this.battleInfo = this.battleInfo + localStorage.getItem('roleName') + "使用了" + item.name + '--\n'
+      if (this.whoRound === 2){
+        this.noticeInfo = '不是你的回合！'
+        this.snackbar = true
+        return
+      }
+      //物理攻击
       if (item.type === 1){
-        this.monsterHP = this.monsterHP - item.value
-        if (this.monsterHP <= 0){
-          this.monsterHP = this.totalHp
-        }
-        this.monsterAbsoluteHp = this.monsterHP / (this.totalHp / 100)
-      }else if (item.type === 2){
-        this.attribute.baseHealth = this.attribute.baseHealth + item.value
-        if (this.attribute.baseHealth > this.attribute.maxHealth){
-          this.attribute.baseHealth = this.attribute.maxHealth
-        }
-        this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
-      }else if (item.type === 3){
-        this.attribute.baseArmor = this.attribute.baseArmor + item.value
+        attack(this.monster.id,this.role.id,item.identifier).then(res => {
+          if (res.data.code === 200){
+            //成功
+            this.monster = res.data.data
+            this.monsterAbsoluteHp = this.monster.baseHealth / (this.monster.maxHealth/100)
+            this.battleInfo = this.battleInfo + localStorage.getItem('roleName') + "使用了" + item.name +',造成了' + item.value +  '伤害--\n'
+          }else if (res.data.code === 666){
+            //击败胜利
+            this.noticeInfo = '胜利！'
+            this.snackbar = true
+            this.$router.push({
+              path:'/drawCard'
+            })
+          }
+        })
+      }
+      //回血
+      if (item.type === 2){
+        heal(this.role.id,item.identifier).then(res => {
+          this.role = res.data.data
+          this.attribute = res.data.data.attribute
+          this.battleInfo = this.battleInfo + localStorage.getItem('roleName') + "使用了" + item.name +',恢复了' + item.value +  '生命--\n'
+          this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
+        })
+
+      }
+      //叠甲
+      if (item.type === 3){
+        increaseArmor(this.role.id,item.identifier).then(res =>{
+          this.role = res.data.data
+          this.attribute = res.data.data.attribute
+          this.battleInfo = this.battleInfo + localStorage.getItem('roleName') + "使用了" + item.name +',叠了' + item.value +  '点甲--\n'
+        })
       }
       //删牌
       this.list.splice(n,1)
     },
-    //抽牌
+    //回合初抽牌
     getCardByNum(num){
-      getCard(num).then(res => {
-        this.list = this.list.concat(res.data.data)
-      })
+      setTimeout(()=>{
+        getCard(num,localStorage.getItem("localRoleId")).then(res => {
+          this.list = this.list.concat(res.data.data)
+        })
+      },500)
     },
     //文字
     printIntroduce(){

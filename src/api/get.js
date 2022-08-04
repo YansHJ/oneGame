@@ -11,21 +11,94 @@ export function loginLogin(username, password) {
   })
 }
 // 抽卡
-export function getCard(quantity) {
+export function getCard(quantity,roleId) {
   return service.get('/card/getInitCard', {
     headers: { 'Content-Type': 'application/json' },
     params: {
-      quantity: quantity
+      quantity: quantity,
+      roleId:roleId
     }
   })
 }
 
-// 抽卡
+// 获取角色
 export function getRole(id) {
   return service.get('/playerRole/getRole', {
     headers: { 'Content-Type': 'application/json' },
     params: {
       id: id
+    }
+  })
+}
+// 初始化怪物
+export function initMonster(id,roleId) {
+  return service.get('/monster/initMonster', {
+    headers: { 'Content-Type': 'application/json' },
+    params: {
+      id: id,
+      roleId: roleId
+    }
+  })
+}
+
+// 基础攻击牌
+export function attack(monsterId,roleId,cardId) {
+  return service.get('/battle/attack', {
+    headers: { 'Content-Type': 'application/json' },
+    params: {
+      monsterId: monsterId,
+      roleId: roleId,
+      cardId:cardId
+    }
+  })
+}
+// 基础治疗
+export function heal(roleId,cardId) {
+  return service.get('/battle/heal', {
+    headers: { 'Content-Type': 'application/json' },
+    params: {
+      roleId: roleId,
+      cardId:cardId
+    }
+  })
+}
+// 基础叠甲
+export function increaseArmor(roleId,cardId) {
+  return service.get('/battle/increaseArmor', {
+    headers: { 'Content-Type': 'application/json' },
+    params: {
+      roleId: roleId,
+      cardId:cardId
+    }
+  })
+}
+// 怪物攻击
+export function underAttack(monsterId,roleId) {
+  return service.get('/battle/underAttack', {
+    headers: { 'Content-Type': 'application/json' },
+    params: {
+      monsterId: monsterId,
+      roleId: roleId,
+    }
+  })
+}
+// 卡池抽卡
+export function drawCard(quantity) {
+  return service.get('/card/drawCard', {
+    headers: { 'Content-Type': 'application/json' },
+    params: {
+      quantity: quantity,
+    }
+  })
+}
+
+// 背包添加卡牌
+export function roleAddCard(roleId,cardId) {
+  return service.get('/playerRole/roleAddCard', {
+    headers: { 'Content-Type': 'application/json' },
+    params: {
+      roleId: roleId,
+      cardId: cardId
     }
   })
 }

@@ -5,6 +5,7 @@ import GuidancePage from "../components/GuidancePage";
 import ChangeWeaponPage from "../components/ChangeWeaponPage";
 import FailPage from "../components/FailPage";
 import BattlePage from "../components/BattlePage";
+import DrawCardPage from "../components/DrawCardPage";
 
 Vue.use(Router)
 
@@ -30,6 +31,10 @@ export default new Router({
       path: '/battle',
       name: 'battle',
       component: BattlePage
+    },{
+      path: '/drawCard',
+      name: 'drawCard',
+      component: DrawCardPage
     }
   ]
 })
