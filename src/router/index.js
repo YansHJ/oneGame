@@ -6,6 +6,8 @@ import ChangeWeaponPage from "../components/ChangeWeaponPage";
 import FailPage from "../components/FailPage";
 import BattlePage from "../components/BattlePage";
 import DrawCardPage from "../components/DrawCardPage";
+import DesignYourMonster from "../components/DesignYourMonster";
+import Map from "../components/MapPage";
 
 Vue.use(Router)
 
@@ -35,6 +37,14 @@ export default new Router({
       path: '/drawCard',
       name: 'drawCard',
       component: DrawCardPage
+    },{
+      path: '/DesignYourMonster',
+      name: 'DesignYourMonster',
+      component: DesignYourMonster
+    },{
+      path: '/map',
+      name: 'Map',
+      component: Map
     }
   ]
 })

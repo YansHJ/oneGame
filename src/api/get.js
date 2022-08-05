@@ -102,3 +102,13 @@ export function roleAddCard(roleId,cardId) {
     }
   })
 }
+
+// 获取地图
+export function getMap(id) {
+  return service.get('/gameLevel/getMap', {
+    headers: { 'Content-Type': 'application/json' },
+    params: {
+      id:id
+    }
+  })
+}

@@ -108,6 +108,7 @@ export default {
       monsterAbsoluteHp:'100',
       list:[],
       battleInfo:'',
+      initCardNum:'',
       monster:{
         id:'',
         name:'哥布林',
@@ -142,12 +143,17 @@ export default {
     }
   },
   created() {
-    this.initRoleMethods()
-    this.initMonsterMethods('10ac1904b1ca14b6')
-    this.getCardByNum(2)
-    this.yourRound()
+      this.monster.id = '10ac1904b1ca14b6'
+      this.initCardNum = 2
+      this.initBattlePage(this.monster.id,this.initCardNum)
   },
   methods :{
+    initBattlePage(monsterId,initCardNum){
+      this.initRoleMethods()
+      this.initMonsterMethods(monsterId)
+      this.getCardByNum(initCardNum)
+      this.yourRound()
+    },
     //初始化怪物
     initMonsterMethods(id){
       setTimeout(()=>{
@@ -182,6 +188,7 @@ export default {
           if (res.data.code === 200){
             this.attribute = res.data.data.role.attribute
             this.battleInfo = this.battleInfo + this.monster.name + "使用了" + res.data.data.monsterSkill.name +',造成了' + res.data.data.monsterSkill.value +  '伤害--\n'
+            this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
             this.finishRound(1)
           }
           if (res.data.code === 999){
