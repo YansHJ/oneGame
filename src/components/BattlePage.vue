@@ -46,9 +46,11 @@
         >结束回合</v-btn>
       </div>
     </div>
-    <span style="color: black;font-size: 20px;margin: 0 2rem">行动力：{{ steps }}/3</span>
+
 <!--    卡牌-->
     <div class="cardArea">
+      <h4 style="margin: 0 0 0 1rem;">行动力：{{ steps }}/3</h4>
+      <h4 style="margin: 0 0 0 1rem;">卡牌数量：{{ list.length }}</h4>
         <v-slide-group
           v-model="battleInfo"
           class="pa-4"
@@ -367,7 +369,7 @@ export default {
   margin: 0 auto;
 }
 .cardArea {
-  margin: 2rem auto;
+  margin: 1rem auto;
   width: 90%;
   height: 17rem;
   /*display: flex;*/
