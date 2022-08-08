@@ -121,3 +121,13 @@ export function updateLayer(roleId) {
     }
   })
 }
+
+// 过关增加关卡
+export function getMyCard(roleId) {
+  return service.get('/playerRole/getMyCard', {
+    headers: { 'Content-Type': 'application/json' },
+    params: {
+      roleId: roleId
+    }
+  })
+}

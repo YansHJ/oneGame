@@ -33,11 +33,34 @@
         </v-card>
       </div>
     </div>
+    <div style="text-align: center" v-show="cardAreaShow">
+      <h2>我的卡牌</h2>
+      <v-divider></v-divider>
+      <v-divider></v-divider>
+    </div>
+    <h3 style="margin: 0 0 0 1rem;">卡牌数量:{{ myCardList.length }}</h3>
+    <div class="cardArea" v-show="cardAreaShow">
+      <div class="card" v-for="(item) in myCardList">
+        <v-card
+          class="ma-4"
+          height="9rem"
+          width="100"
+          @click="addCard(item)"
+        ><v-img
+          height="30px"
+          src="https://s4.ax1x.com/2021/12/14/ovKMzd.jpg"
+        />
+          <h5 v-bind:style="item.color">{{ item.name }}</h5>
+          <h3 style="color: red">{{ item.value }}</h3>
+          <h6>{{ item.describe }}</h6>
+        </v-card>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import {drawCard} from "../api/get";
+import {drawCard, getMyCard} from "../api/get";
 import {initRole} from "../api/post";
 import {getRole} from "../api/get";
 import {roleAddCard} from "../api/get";
@@ -52,6 +75,7 @@ export default {
       noticeInfo:'',
       introduceInfo:'',
       list:[],
+      myCardList:[],
       role:{
         id:'',
         name:'',
@@ -68,8 +92,16 @@ export default {
     this.initRoleMethods()
     this.getCardByNum(2)
     this.printIntroduce()
+    this.myCard()
   },
   methods :{
+    myCard(){
+      setTimeout(()=>{
+        getMyCard(this.role.id).then(res => {
+          this.myCardList = res.data.data
+        })
+      },800)
+    },
     addCard(item){
       roleAddCard(this.role.id,item.identifier)
       updateLayer(this.role.id)
