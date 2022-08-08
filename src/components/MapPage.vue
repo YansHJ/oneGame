@@ -6,11 +6,35 @@
         <span style="font-size: 20px;padding: 0 30px 0 30px">{{introduceInfo}}</span>
       </div>
     </div>
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="2000">
+      {{ noticeInfo }}
+    </v-snackbar>
     <div class="Map">
-
-      <Map :list="List" :ee="ee"></Map>
-
+      <div class="mapList" v-for="(item,index) in List" :key="index">
+        <div class="maps" v-for="(innerItem,index) in item" :key="index" >
+          <v-card
+            class="ma-4"
+            height="6rem"
+            width="100"
+            @click="selectLevel(innerItem)"
+            outlined
+            elevation="12"
+            shaped
+          >
+            <h4>{{ innerItem.number }}</h4>
+            <h6>{{ innerItem.describe }}</h6>
+            <h6 style="color: red" v-if="innerItem.layer === role.layer"> 当前在这里 </h6>
+            <img src="../assets/iconPng/battle.png" style="width: 2rem;height: 2rem" v-if="innerItem.type === 0">
+            <img src="../assets/iconPng/clover.png" style="width: 2rem;height: 2rem" v-if="innerItem.type === 2">
+            <img src="../assets/iconPng/ghost.png" style="width: 2rem;height: 2rem" v-if="innerItem.type === 1">
+          </v-card>
+        </div>
+      </div>
+      <!--      <Map :list="List"></Map>-->
     </div>
+
   </div>
 </template>
 
@@ -25,7 +49,20 @@ export default {
   data () {
     return {
       List: [] ,
-      ee:1
+      monsters:[],
+      introduceInfo:'',
+      noticeInfo:'',
+      snackbar:'',
+      role:{
+        id:'',
+        name:'',
+        type:'',
+        attributeId:'',
+        userId:'',
+        createTime:'',
+        sex:'',
+        layer:'',
+      },
     }
   },
   created() {
@@ -41,41 +78,43 @@ export default {
     },
     //初始化角色
     initRoleMethods(){
-      //本地无角色
-      if (!localStorage.getItem("localRoleId")){
-        this.role.sex = localStorage.getItem('roleSex')
-        this.role.name = localStorage.getItem('roleName')
-        initRole(this.role).then(res =>{
-          if (res.data.code !== 200){
-            this.noticeInfo = '网络异常'
-            this.snackbar = true
-          }else {
-            this.role = res.data.data
-            this.attribute = res.data.data.attribute
-            this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
-            localStorage.setItem("localRoleId",this.role.id)
-          }
-        })
-      }else {
-        getRole(localStorage.getItem("localRoleId")).then(res =>{
-          if (res.data.code !== 200){
-            this.noticeInfo = '网络异常'
-            this.snackbar = true
-          }else {
-            this.role = res.data.data
-            this.attribute = res.data.data.attribute
-            this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
-          }
-          if (res.data.code === 400){
-            localStorage.removeItem("localRoleId")
-            this.initRoleMethods()
-          }
-        })
-      }
+      setTimeout(()=>{
+        //本地无角色
+        if (!localStorage.getItem("localRoleId")){
+          this.role.sex = localStorage.getItem('roleSex')
+          this.role.name = localStorage.getItem('roleName')
+          initRole(this.role).then(res =>{
+            if (res.data.code !== 200){
+              this.noticeInfo = '网络异常'
+              this.snackbar = true
+            }else {
+              this.role = res.data.data
+              this.attribute = res.data.data.attribute
+              this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
+              localStorage.setItem("localRoleId",this.role.id)
+            }
+          })
+        }else {
+          getRole(localStorage.getItem("localRoleId")).then(res =>{
+            if (res.data.code !== 200){
+              this.noticeInfo = '网络异常'
+              this.snackbar = true
+            }else {
+              this.role = res.data.data
+              this.attribute = res.data.data.attribute
+              this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
+            }
+            if (res.data.code === 400){
+              localStorage.removeItem("localRoleId")
+              this.initRoleMethods()
+            }
+          })
+        }
+      },800)
     },
     //文字
     printIntroduce(){
-      let str = ''
+      let str = '_选择关卡_'
       let i = 0;
       this.typing(i,str)
     },
@@ -87,6 +126,25 @@ export default {
         this.introduceInfo = str;
         setTimeout(()=>{
         },1500)
+      }
+    },
+    //选择关卡
+    selectLevel(item){
+      if (item.layer !== this.role.layer + 1){
+        this.noticeInfo = '不可以跳关哦'
+        this.snackbar = true
+      }else if (item.type === 0 || item.type === 1){
+        this.$router.push({
+          path:'/battle',
+          query:{
+            monsterId:item.monsterIds,
+            cardNum:item.cardNum
+          }
+        })
+      }else if (item.type === 2){
+        this.$router.push({
+          path:'/drawCard',
+        })
       }
     },
     //跳转
@@ -120,5 +178,17 @@ export default {
 .Map {
   width: 100%;
   height: 100%;
+}
+.mapList {
+  display:flex;
+  align-items: center;
+  justify-content:center;
+  width:100%;
+  height:auto;
+}
+.maps {
+  width:10rem;
+  height:7rem;
+  text-align: center;
 }
 </style>

@@ -112,3 +112,12 @@ export function getMap(id) {
     }
   })
 }
+// 过关增加关卡
+export function updateLayer(roleId) {
+  return service.get('/playerRole/updateLayer', {
+    headers: { 'Content-Type': 'application/json' },
+    params: {
+      roleId: roleId
+    }
+  })
+}

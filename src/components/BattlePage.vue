@@ -33,7 +33,6 @@
           label="战斗信息"
           value=""
           disabled
-
           v-model="battleInfo"
           style="height: 500px"
         ></v-textarea>
@@ -47,7 +46,7 @@
         >结束回合</v-btn>
       </div>
     </div>
-
+    <span style="color: black;font-size: 20px;margin: 0 2rem">行动力：{{ steps }}/3</span>
 <!--    卡牌-->
     <div class="cardArea">
         <v-slide-group
@@ -96,6 +95,7 @@ import {attack} from "../api/get";
 import {heal} from "../api/get";
 import {increaseArmor} from "../api/get";
 import {underAttack} from "../api/get";
+import {updateLayer} from "../api/get";
 
 export default {
   data () {
@@ -139,12 +139,13 @@ export default {
         baseArmor:'',
       },
       whoRound:'',
-      endRound:true
+      endRound:true,
+      steps:3,
     }
   },
   created() {
-      this.monster.id = '10ac1904b1ca14b6'
-      this.initCardNum = 2
+      this.monster.id = this.$route.query.monsterId
+      this.initCardNum = this.$route.query.cardNum
       this.initBattlePage(this.monster.id,this.initCardNum)
   },
   methods :{
@@ -167,6 +168,7 @@ export default {
     yourRound(){
       this.noticeInfo = '你的回合'
       this.snackbar = true
+      this.steps = 3
       this.getCardByNum(2)
     },
     finishRound(i){
@@ -253,6 +255,12 @@ export default {
         this.snackbar = true
         return
       }
+      if (this.steps === 0){
+        this.noticeInfo = '结束回合哦！'
+        this.snackbar = true
+        return
+      }
+      this.steps = this.steps - 1
       //物理攻击
       if (item.type === 1){
         attack(this.monster.id,this.role.id,item.identifier).then(res => {
@@ -265,8 +273,9 @@ export default {
             //击败胜利
             this.noticeInfo = '胜利！'
             this.snackbar = true
+            updateLayer(this.role.id)
             this.$router.push({
-              path:'/drawCard'
+              path:'/map'
             })
           }
         })

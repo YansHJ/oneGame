@@ -41,6 +41,7 @@ import {drawCard} from "../api/get";
 import {initRole} from "../api/post";
 import {getRole} from "../api/get";
 import {roleAddCard} from "../api/get";
+import {updateLayer} from "../api/get";
 
 export default {
   data () {
@@ -71,8 +72,9 @@ export default {
   methods :{
     addCard(item){
       roleAddCard(this.role.id,item.identifier)
+      updateLayer(this.role.id)
       this.$router.push({
-        path:'/battle'
+        path:'/map'
       })
     },
     //初始化角色

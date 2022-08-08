@@ -102,7 +102,11 @@ export default {
     },
     jumpToStart(){
       this.$router.push({
-        path:'/battle'
+        path:'/battle',
+        query:{
+          monsterId:'10ac1904b1ca14b6',
+          cardNum:2
+        }
       })
     },
     fail(){

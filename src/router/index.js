@@ -8,6 +8,7 @@ import BattlePage from "../components/BattlePage";
 import DrawCardPage from "../components/DrawCardPage";
 import DesignYourMonster from "../components/DesignYourMonster";
 import Map from "../components/MapPage";
+import TestPage from "../components/TestPage";
 
 Vue.use(Router)
 
@@ -45,6 +46,10 @@ export default new Router({
       path: '/map',
       name: 'Map',
       component: Map
+    },{
+      path: '/test',
+      name: 'test',
+      component: TestPage
     }
   ]
 })
