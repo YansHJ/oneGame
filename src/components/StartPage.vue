@@ -8,7 +8,8 @@
 <!--    开始界面-->
     <div class="startPage" v-show="startPageShow">
     <div class="gameName">
-      <span style="font-size: 30px">《一个游戏》</span>
+      <span style="font-size: 30px">《One Game》</span>
+      <span style="font-size: 15px">V 0.6</span>
     </div>
     <div class="startButton">
       <v-btn
@@ -17,6 +18,7 @@
         @click="startPageShow = false;changeNamePageShow = true;nameInput = true"
       >开始游戏</v-btn>
     </div>
+<!--      <span style="font-size: 18px;text-align: center">Powered By Yans</span>-->
     </div>
 <!--    命名界面-->
     <div class="changeName" v-show="changeNamePageShow">
