@@ -17,6 +17,12 @@
         outlined
         @click="startPageShow = false;changeNamePageShow = true;nameInput = true"
       >开始游戏</v-btn>
+      <v-btn
+        elevation="2"
+        outlined
+        @click="jumpToBattle"
+        v-show="continueBtnShow"
+      >继续挑战</v-btn>
     </div>
 <!--      <span style="font-size: 18px;text-align: center">Powered By Yans</span>-->
     </div>
@@ -68,6 +74,7 @@ export default {
       changeNamePageShow:false,
       introducePageShow:false,
       braveName:'',
+      continueBtnShow:false,
       tipsInfo:'',
       tipsInfoFlag:false,
       introduceInfo:'',
@@ -77,6 +84,7 @@ export default {
     }
   },
   created() {
+    this.continueBtnChange()
   },
   methods :{
     changeName(){
@@ -118,7 +126,21 @@ export default {
         path:'/guidance'
       })
       localStorage.setItem("roleName",this.braveName)
-    }
+    },
+    jumpToBattle(){
+      this.$router.push({
+        path:'/battle',
+        query:{
+          monsterId:'10ac1904b1ca14b6',
+          cardNum:2
+        }
+      })
+    },
+    continueBtnChange(){
+      if (localStorage.getItem('roleName')){
+        this.continueBtnShow = true
+      }
+    },
   }
 }
 </script>

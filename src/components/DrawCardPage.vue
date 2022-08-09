@@ -217,7 +217,7 @@ export default {
 
 <style scoped>
 .introduce {
-  margin: 8rem auto;
+  margin: 4rem auto;
   text-align: center;
 }
 .cardArea {
