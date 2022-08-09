@@ -138,7 +138,8 @@ export default {
         attributeId:'',
         userId:'',
         createTime:'',
-        sex:''
+        sex:'',
+        layer:'',
       },
       attribute:{
         id:'',
@@ -161,6 +162,11 @@ export default {
     initBattlePage(monsterId,initCardNum){
       this.initRoleMethods()
       this.initMonsterMethods(monsterId)
+      if (this.role.layer !== 1){
+        this.$router.push({
+          path:'/map'
+        })
+      }
       this.getCardByNum(initCardNum)
       this.yourRound()
     },

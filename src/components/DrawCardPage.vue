@@ -189,9 +189,11 @@ export default {
     },
     endBuy(){
       updateLayer(this.role.id)
-      this.$router.push({
-        path:'/map'
-      })
+      setTimeout(()=>{
+        this.$router.push({
+          path:'/map'
+        })
+      },500)
     },
     addCard(item){
       roleAddCard(this.role.id,item.identifier)
