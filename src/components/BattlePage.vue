@@ -10,6 +10,12 @@
       :timeout="2000">
       {{ noticeInfo }}
     </v-snackbar>
+    <v-snackbar
+      v-model="underAttackSnackbar"
+      color="red accent-2"
+      :timeout="2000">
+      {{ noticeInfo }}
+    </v-snackbar>
 <!--    怪物状态-->
     <div class="monsterState">
       <v-progress-linear v-model="monsterAbsoluteHp" color="red"></v-progress-linear>
@@ -105,6 +111,7 @@ export default {
       tipsInfo:'',
       tipsInfoFlag:false,
       snackbar:false,
+      underAttackSnackbar:false,
       noticeInfo:'',
       roleAbsoluteHp:'',
       monsterAbsoluteHp:'100',
@@ -191,18 +198,27 @@ export default {
         underAttack(this.monster.id,this.role.id).then(res =>{
           if (res.data.code === 200){
             this.attribute = res.data.data.role.attribute
-            this.battleInfo = this.battleInfo + this.monster.name + "使用了" + res.data.data.monsterSkill.name +',造成了' + res.data.data.monsterSkill.value +  '伤害--\n'
+            this.battleInfo = this.battleInfo + this.monster.name + "使用了" + res.data.data.monsterSkill.name +',造成了 ' + res.data.data.monsterSkill.value +  ' 伤害\n'
+            this.underAttackSnackbar = true
+            this.noticeInfo = this.monster.name + "使用了" + res.data.data.monsterSkill.name +',造成了 ' + res.data.data.monsterSkill.value +  ' 伤害'
             this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
-            this.finishRound(1)
+            setTimeout(()=>{
+              this.finishRound(1)
+            },2500)
           }
           if (res.data.code === 999){
             console.log('很蓝的啦，已经结束了！')
             this.noticeInfo = '你被击败了！'
             this.snackbar = true
+            this.attribute.baseHealth = 0
+            this.attribute.baseArmor = 0
+            this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
             localStorage.removeItem("localRoleId")
-            this.$router.push({
-              path:'/fail'
-            })
+            setTimeout(()=>{
+              this.$router.push({
+                path:'/fail'
+              })
+            },4000)
           }
         })
       },4000)
