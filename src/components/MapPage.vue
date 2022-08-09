@@ -174,6 +174,7 @@ export default {
 .mainPage {
   width: 100%;
   height: 100%;
+  overflow: auto;
 }
 .Map {
   width: 100%;

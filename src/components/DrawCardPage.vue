@@ -27,13 +27,70 @@
             v-for="(item,n) in list"
             :key="n"
           >
+            <div>
+              <v-card
+                class="ma-4"
+                height="9rem"
+                width="100"
+                @click="trade(item)"
+              >
+                <v-img
+                  height="30px"
+                  src="https://s4.ax1x.com/2021/12/14/ovKMzd.jpg"
+                />
+                <h5 v-bind:style="item.color">{{ item.name }}</h5>
+                <h3 style="color: red">{{ item.value }}</h3>
+                <h6>{{ item.describe }}</h6>
+              </v-card>
+
+              <h3 style="color: darkorange ;text-align: center;">${{ item.price }}</h3>
+            </div>
+          </v-slide-item>
+        </v-slide-group>
+    </div>
+    <div style="width: 100%;display: flex">
+      <v-btn
+        elevation="6"
+        outlined
+        style="margin: 0 auto 1rem auto"
+        v-show="cardAreaShow"
+        @click="refreshShop(2)"
+      >
+        刷新($2)</v-btn>
+      <v-btn
+        elevation="6"
+        outlined
+        style="margin: 0 auto 1rem auto"
+        v-show="cardAreaShow"
+        @click="endBuy"
+      >
+        结束购买</v-btn>
+    </div>
+    <div style="" v-show="cardAreaShow">
+      <h3 style="margin: 0 0 0 2px">背包</h3>
+      <v-divider></v-divider>
+      <v-divider></v-divider>
+    </div>
+    <h4 v-show="cardAreaShow" style="margin: 0 0 0 1rem;">资金 : {{ role.balance }}$</h4>
+    <h4 v-show="cardAreaShow" style="margin: 0 0 0 1rem;">牌库：{{ myCardList.length }}</h4>
+    <div class="myCard" v-show="cardAreaShow">
+      <v-slide-group
+        v-model="battleInfo"
+        class="pa-4"
+        center-active
+        style="text-align: center"
+      >
+        <v-slide-item
+          v-for="(item) in myCardList"
+          :key="n"
+        >
+          <div>
             <v-card
               class="ma-4"
               height="9rem"
               width="100"
-              @click="addCard(item)"
-            ><h4 style="color: darkorange ;margin: 0 1rem 0 70%;width: 2rem;">${{ item.price }}</h4>
-              <v-img
+              @click=""
+            ><v-img
               height="30px"
               src="https://s4.ax1x.com/2021/12/14/ovKMzd.jpg"
             />
@@ -41,32 +98,9 @@
               <h3 style="color: red">{{ item.value }}</h3>
               <h6>{{ item.describe }}</h6>
             </v-card>
-          </v-slide-item>
-        </v-slide-group>
-    </div>
-    <div style="text-align: center" v-show="cardAreaShow">
-      <h2>我的卡牌</h2>
-      <v-divider></v-divider>
-      <v-divider></v-divider>
-    </div>
-    <h3 v-show="cardAreaShow" style="margin: 0 0 0 1rem;">$ :{{ role.balance }}</h3>
-    <h3 v-show="cardAreaShow" style="margin: 0 0 0 1rem;">卡牌数量：{{ myCardList.length }}</h3>
-    <div class="myCard" v-show="cardAreaShow">
-      <div class="card" v-for="(item) in myCardList">
-        <v-card
-          class="ma-4"
-          height="9rem"
-          width="100"
-          @click=""
-        ><v-img
-          height="30px"
-          src="https://s4.ax1x.com/2021/12/14/ovKMzd.jpg"
-        />
-          <h5 v-bind:style="item.color">{{ item.name }}</h5>
-          <h3 style="color: red">{{ item.value }}</h3>
-          <h6>{{ item.describe }}</h6>
-        </v-card>
-      </div>
+          </div>
+        </v-slide-item>
+      </v-slide-group>
     </div>
   </div>
 </template>
@@ -77,6 +111,7 @@ import {initRole} from "../api/post";
 import {getRole} from "../api/get";
 import {roleAddCard} from "../api/get";
 import {updateLayer} from "../api/get";
+import {buy} from "../api/get";
 
 export default {
   data () {
@@ -115,17 +150,48 @@ export default {
         })
       },800)
     },
-    addCard(item){
-      if (this.role.balance - item.price < 0){
-        this.noticeInfo = '资金不足'
-        this.snackbar = true
-        return
-      }
-      roleAddCard(this.role.id,item.identifier)
+    refreshShop(price){
+      buy(this.role.id,price).then(res=>{
+        if (res.data.code === 400){
+          this.noticeInfo = res.data.msg
+          this.snackbar = true
+          return
+        }
+        if (res.data.code === 200){
+          this.noticeInfo = '刷新成功'
+          this.snackbar = true
+          this.list = []
+          this.role.balance = res.data.data.balance
+          this.getCardByNum(6)
+        }
+      })
+    },
+    trade(item){
+      buy(this.role.id,item.price).then(res=>{
+        if (res.data.code === 400){
+          this.noticeInfo = res.data.msg
+          this.snackbar = true
+          return
+        }
+        if (res.data.code === 200){
+          this.noticeInfo = '购买成功'
+          this.snackbar = true
+          this.addCard(item)
+          setTimeout(()=>{
+            this.myCardList = []
+            this.myCard()
+          },700)
+        }
+      })
+    },
+    endBuy(){
       updateLayer(this.role.id)
       this.$router.push({
         path:'/map'
       })
+    },
+    addCard(item){
+      roleAddCard(this.role.id,item.identifier)
     },
     //初始化角色
     initRoleMethods(){
@@ -161,14 +227,6 @@ export default {
         })
       }
     },
-    //洗牌
-    refresh(){
-      setTimeout(()=>{
-        drawCard(2).then(res => {
-          this.list = res.data.data
-        })
-      },500)
-    },
     //回合初抽牌
     getCardByNum(num){
       setTimeout(()=>{
@@ -191,7 +249,7 @@ export default {
       }else{
         this.introduceInfo = str;
         setTimeout(()=>{
-          this.introduceInfo = '做出选择(现版本只能买一个，下个版本更新)'
+          this.introduceInfo = '购买(为什么战利品需要花钱!)'
           this.cardAreaShow = true
         },1500)
       }
@@ -217,13 +275,13 @@ export default {
 
 <style scoped>
 .introduce {
-  margin: 4rem auto;
+  margin: 2rem auto;
   text-align: center;
 }
 .cardArea {
   margin: 0 auto ;
   width: 90%;
-  height: 17rem;
+  height: 15rem;
   display: flex;
   text-align: center;
 }
