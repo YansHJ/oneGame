@@ -32,7 +32,7 @@
                 class="ma-4"
                 height="9rem"
                 width="100"
-                @click="trade(item)"
+                @click="trade(item,n)"
               >
                 <v-img
                   height="30px"
@@ -166,7 +166,7 @@ export default {
         }
       })
     },
-    trade(item){
+    trade(item,n){
       buy(this.role.id,item.price).then(res=>{
         if (res.data.code === 400){
           this.noticeInfo = res.data.msg
@@ -176,6 +176,9 @@ export default {
         if (res.data.code === 200){
           this.noticeInfo = '购买成功'
           this.snackbar = true
+          this.role.balance = res.data.data.balance
+          //删牌
+          this.list.splice(n,1)
           this.addCard(item)
           setTimeout(()=>{
             this.myCardList = []
