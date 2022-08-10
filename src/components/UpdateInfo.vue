@@ -1,6 +1,7 @@
 <template>
   <div class="mainPage">
     <div style="text-align: center;margin: 1rem">
+      <a style="float: left" @click="backToStart">< 返回</a>
       <span>更新日志</span>
     </div>
     <v-divider></v-divider>
@@ -26,6 +27,9 @@
                 <div class="text-caption">
                   2.优化展示和布局
                 </div>
+                <div class="text-caption">
+                  3.新增更新日志
+                </div>
               </v-col>
             </v-row>
           </v-timeline-item>
@@ -38,12 +42,17 @@
 
 <script>
 export default {
-  name: "TestPage"
+  name: "UpdateInfo",
+  methods:{
+    backToStart(){
+      this.$router.push({
+        path: '/'
+      })
+    },
+  }
 }
 </script>
 
 <style scoped>
-.mainPage {
 
-}
 </style>

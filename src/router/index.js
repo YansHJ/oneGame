@@ -9,6 +9,7 @@ import DrawCardPage from "../components/DrawCardPage";
 import DesignYourMonster from "../components/DesignYourMonster";
 import Map from "../components/MapPage";
 import TestPage from "../components/TestPage";
+import UpdateInfo from "../components/UpdateInfo";
 
 Vue.use(Router)
 
@@ -50,6 +51,10 @@ export default new Router({
       path: '/test',
       name: 'test',
       component: TestPage
+    },{
+      path: '/update',
+      name: 'update',
+      component: UpdateInfo
     }
   ]
 })

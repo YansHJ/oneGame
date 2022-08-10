@@ -9,7 +9,7 @@
     <div class="startPage" v-show="startPageShow">
     <div class="gameName">
       <span style="font-size: 30px">《One Game》</span>
-      <span style="font-size: 15px">V 0.6</span>
+      <span style="font-size: 14px">V 0.6.1 Alpha测试版</span>
     </div>
     <div class="startButton">
       <v-btn
@@ -23,6 +23,12 @@
         @click="jumpToBattle"
         v-show="continueBtnShow"
       >继续挑战</v-btn>
+      <v-btn
+        elevation="2"
+        outlined
+        @click="jumpToUpdate"
+        v-show="continueBtnShow"
+      >更新日志</v-btn>
     </div>
 <!--      <span style="font-size: 18px;text-align: center">Powered By Yans</span>-->
     </div>
@@ -136,6 +142,11 @@ export default {
         }
       })
     },
+    jumpToUpdate(){
+      this.$router.push({
+        path:'/update'
+      })
+    },
     continueBtnChange(){
       if (localStorage.getItem('roleName')){
         this.continueBtnShow = true
@@ -147,6 +158,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.mainPage {
+  width: 100%;
+  height: 100%;
+}
 .gameName {
   text-align: center;
   margin: 10rem auto;
@@ -164,6 +179,7 @@ export default {
   text-align: center;
 }
 .startPage {
-
+  width: 100%;
+  height: 100%;
 }
 </style>
