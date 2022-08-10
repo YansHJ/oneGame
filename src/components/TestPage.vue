@@ -1,37 +1,30 @@
 <template>
   <div class="mainPage">
-    <div style="text-align: center;margin: 1rem">
-      <span>更新日志</span>
-    </div>
-    <v-divider></v-divider>
-    <div class="timeline">
-      <v-card-text class="py-0">
-        <v-timeline
-          align-top
-          dense
+    <div class="card">
+      <v-slide-group
+        v-model="battleInfo"
+        class="pa-4"
+        center-active
+        style="text-align: center"
+      >
+        <v-slide-item
+          :key="n"
         >
-          <v-timeline-item
-            color="pink"
-            small
-          >
-            <v-row class="pt-1">
-              <v-col cols="5">
-                <strong>2022-08-10</strong>
-              </v-col>
-              <v-col>
-                <strong>V 0.6.1 Alpha</strong>
-                <div class="text-caption">
-                  1.修复反复返回刷哥布林和商店问题
-                </div>
-                <div class="text-caption">
-                  2.优化展示和布局
-                </div>
-              </v-col>
-            </v-row>
-          </v-timeline-item>
-
-        </v-timeline>
-      </v-card-text>
+          <v-card
+            class="ma-4"
+            height="11rem"
+            width="115"
+            @click=""
+          ><v-img
+            height="30px"
+            src="https://s4.ax1x.com/2021/12/14/ovKMzd.jpg"
+          />
+            <h5>快看看</h5>
+            <h3 style="color: red">12</h3>
+            <h6>消耗自己50%的血条,对敌方造成自己血量上限3倍的伤害,血量不足50%可是会死的哦</h6>
+          </v-card>
+        </v-slide-item>
+      </v-slide-group>
     </div>
   </div>
 </template>
@@ -44,6 +37,13 @@ export default {
 
 <style scoped>
 .mainPage {
-
+  width: 100%;
+  height: 100%;
+}
+.card {
+  margin: 1rem auto;
+  width: 90%;
+  height: 17rem;
+  /*display: flex;*/
 }
 </style>

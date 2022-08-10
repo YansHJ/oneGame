@@ -7,6 +7,7 @@
     <v-divider></v-divider>
     <div class="timeline">
       <v-card-text class="py-0">
+<!--        V 0.6.1-->
         <v-timeline
           align-top
           dense

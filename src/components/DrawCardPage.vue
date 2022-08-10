@@ -30,8 +30,8 @@
             <div>
               <v-card
                 class="ma-4"
-                height="9rem"
-                width="100"
+                height="11rem"
+                width="115"
                 @click="trade(item,n)"
               >
                 <v-img
@@ -87,8 +87,8 @@
           <div>
             <v-card
               class="ma-4"
-              height="9rem"
-              width="100"
+              height="11rem"
+              width="115"
               @click=""
             ><v-img
               height="30px"
@@ -140,6 +140,7 @@ export default {
   },
   created() {
     this.initRoleMethods()
+    this.checkLayer(this.layer)
     this.getCardByNum(6)
     this.printIntroduce()
     this.myCard()

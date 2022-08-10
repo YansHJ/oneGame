@@ -69,8 +69,8 @@
           >
             <v-card
               class="ma-4"
-              height="9rem"
-              width="100"
+              height="11rem"
+              width="115"
               @click="attack(item,n)"
             ><v-img
               height="30px"
@@ -176,10 +176,10 @@ export default {
     },
     initBattlePage(monsterId,initCardNum){
       this.initRoleMethods()
+      this.checkLayer(this.layer)
       this.initMonsterMethods(monsterId)
       this.getCardByNum(initCardNum)
       this.yourRound()
-      this.checkLayer(this.layer)
     },
     //初始化怪物
     initMonsterMethods(id){
