@@ -71,6 +71,9 @@ export default {
     this.initMap('0d07')
   },
   methods :{
+    checkLayer(){
+
+    },
     initMap(mapId){
       getMap(mapId).then(res =>{
         this.List = res.data.data
@@ -138,7 +141,8 @@ export default {
           path:'/battle',
           query:{
             monsterId:item.monsterIds,
-            cardNum:item.cardNum
+            cardNum:item.cardNum,
+            layer:item.layer
           }
         })
       }else if (item.type === 2){

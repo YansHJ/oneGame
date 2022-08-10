@@ -151,24 +151,35 @@ export default {
       whoRound:'',
       endRound:true,
       steps:3,
+      layer:999,
     }
   },
   created() {
       this.monster.id = this.$route.query.monsterId
       this.initCardNum = this.$route.query.cardNum
+      this.layer = this.$route.query.layer
       this.initBattlePage(this.monster.id,this.initCardNum)
   },
   methods :{
+    checkLayer(layer){
+      setTimeout(()=>{
+        if (layer === 999){
+          this.$router.push({
+            path:'/map'
+          })
+        }else if (layer != (this.role.layer + 1)){
+          this.$router.push({
+            path:'/map'
+          })
+        }
+      },1000)
+    },
     initBattlePage(monsterId,initCardNum){
       this.initRoleMethods()
       this.initMonsterMethods(monsterId)
-      if (this.role.layer !== 1){
-        this.$router.push({
-          path:'/map'
-        })
-      }
       this.getCardByNum(initCardNum)
       this.yourRound()
+      this.checkLayer(this.layer)
     },
     //初始化怪物
     initMonsterMethods(id){

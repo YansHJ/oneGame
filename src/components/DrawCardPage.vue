@@ -134,6 +134,7 @@ export default {
         balance:'',
       },
       cardAreaShow:false,
+      layer:''
     }
   },
   created() {
@@ -141,6 +142,8 @@ export default {
     this.getCardByNum(6)
     this.printIntroduce()
     this.myCard()
+    this.layer = this.$route.query.layer
+    this.checkLayer(this.layer)
   },
   methods :{
     myCard(){
@@ -149,6 +152,19 @@ export default {
           this.myCardList = res.data.data
         })
       },800)
+    },
+    checkLayer(layer){
+      setTimeout(()=>{
+        if (layer === 999){
+          this.$router.push({
+            path:'/map'
+          })
+        }else if (layer != (this.role.layer + 1)){
+          this.$router.push({
+            path:'/map'
+          })
+        }
+      },1000)
     },
     refreshShop(price){
       buy(this.role.id,price).then(res=>{
