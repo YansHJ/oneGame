@@ -6,7 +6,7 @@ const service = axios.create({
   // baseURL: '/', // api的base_Url
   // 后端的请求路径
   baseURL: 'http://124.70.5.108:7287', // api的base_Url
-  // baseURL: 'http://localhost:7286', // api的base_Url
+  // baseURL: 'http://localhost:7287', // api的base_Url
   timeout: 50000 // 请求超时时间
 })
 // axios.defaults.withCredentials = true;

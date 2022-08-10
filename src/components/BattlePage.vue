@@ -208,6 +208,37 @@ export default {
         this.yourRound()
       }
     },
+    defeated(msg){
+      if (msg!==''){
+        this.noticeInfo = msg
+      }else {
+        this.noticeInfo = '你被击败了！'
+      }
+      this.snackbar = true
+      this.attribute.baseHealth = 0
+      this.attribute.baseArmor = 0
+      this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
+      localStorage.removeItem("localRoleId")
+      setTimeout(()=>{
+        this.$router.push({
+          path:'/fail'
+        })
+      },4000)
+    },
+    victory(msg){
+      if (msg!==''){
+        this.noticeInfo = msg
+      }else {
+        this.noticeInfo = '胜利！'
+      }
+      this.snackbar = true
+      updateLayer(this.role.id)
+      setTimeout(()=>{
+        this.$router.push({
+          path:'/map'
+        })
+      },4000)
+    },
     monsterRound(){
       this.noticeInfo = this.monster.name + '要攻击了!'
       this.snackbar = true
@@ -224,18 +255,7 @@ export default {
             },2500)
           }
           if (res.data.code === 999){
-            console.log('很蓝的啦，已经结束了！')
-            this.noticeInfo = '你被击败了！'
-            this.snackbar = true
-            this.attribute.baseHealth = 0
-            this.attribute.baseArmor = 0
-            this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
-            localStorage.removeItem("localRoleId")
-            setTimeout(()=>{
-              this.$router.push({
-                path:'/fail'
-              })
-            },4000)
+            this.defeated()
           }
         })
       },4000)
@@ -301,17 +321,17 @@ export default {
         attack(this.monster.id,this.role.id,item.identifier).then(res => {
           if (res.data.code === 200){
             //成功
-            this.monster = res.data.data
+            this.monster = res.data.data.monster
+            this.role = res.data.data.role
+            this.attribute = res.data.data.role.attribute
             this.monsterAbsoluteHp = this.monster.baseHealth / (this.monster.maxHealth/100)
             this.battleInfo = this.battleInfo + localStorage.getItem('roleName') + "使用了" + item.name +',造成了' + item.value +  '伤害--\n'
           }else if (res.data.code === 666){
             //击败胜利
-            this.noticeInfo = '胜利！'
-            this.snackbar = true
-            updateLayer(this.role.id)
-            this.$router.push({
-              path:'/map'
-            })
+            this.victory(res.data.data.msg)
+          }else if (res.data.code === 999){
+            //失败
+            this.defeated(res.data.data.msg)
           }
         })
       }
@@ -333,6 +353,8 @@ export default {
           this.battleInfo = this.battleInfo + localStorage.getItem('roleName') + "使用了" + item.name +',叠了' + item.value +  '点甲--\n'
         })
       }
+      // //更新角色状态
+      // this.initRoleMethods()
       //删牌
       this.list.splice(n,1)
     },

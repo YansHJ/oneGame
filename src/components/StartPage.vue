@@ -138,7 +138,8 @@ export default {
         path:'/battle',
         query:{
           monsterId:'10ac1904b1ca14b6',
-          cardNum:2
+          cardNum:2,
+          layer:1
         }
       })
     },

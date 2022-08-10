@@ -7,7 +7,7 @@
     <v-divider></v-divider>
     <div class="timeline">
       <v-card-text class="py-0">
-<!--        V 0.6.1-->
+        <!--V 0.6.1-->
         <v-timeline
           align-top
           dense
@@ -30,6 +30,32 @@
                 </div>
                 <div class="text-caption">
                   3.新增更新日志
+                </div>
+              </v-col>
+            </v-row>
+          </v-timeline-item>
+
+        </v-timeline>
+        <!--V 0.6.2-->
+        <v-timeline
+          align-top
+          dense
+        >
+          <v-timeline-item
+            color="pink"
+            small
+          >
+            <v-row class="pt-1">
+              <v-col cols="5">
+                <strong>2022-08-10</strong>
+              </v-col>
+              <v-col>
+                <strong>V 0.6.2 Alpha</strong>
+                <div class="text-caption">
+                  1.优化战斗逻辑
+                </div>
+                <div class="text-caption">
+                  2.新增特殊卡"血祭"
                 </div>
               </v-col>
             </v-row>
