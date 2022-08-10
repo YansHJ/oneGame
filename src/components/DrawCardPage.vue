@@ -140,12 +140,11 @@ export default {
   },
   created() {
     this.initRoleMethods()
+    this.layer = this.$route.query.layer
     this.checkLayer(this.layer)
     this.getCardByNum(6)
     this.printIntroduce()
     this.myCard()
-    this.layer = this.$route.query.layer
-    this.checkLayer(this.layer)
   },
   methods :{
     myCard(){
