@@ -56,7 +56,7 @@
 <!--    卡牌-->
     <div class="cardArea">
       <h4 style="margin: 0 0 0 1rem;">行动力：{{ steps }}/3</h4>
-      <h4 style="margin: 0 0 0 1rem;">卡牌数量：{{ list.length }}</h4>
+      <h4 style="margin: 0 0 0 1rem;">手牌：{{ list.length }}</h4>
         <v-slide-group
           v-model="battleInfo"
           class="pa-4"
