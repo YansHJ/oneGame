@@ -18,7 +18,7 @@
     </div>
     <div class="cardArea" v-show="cardAreaShow">
         <v-slide-group
-          v-model="battleInfo"
+          v-model="temp"
           class="pa-4"
           center-active
           style="text-align: center"
@@ -75,7 +75,7 @@
     <h4 v-show="cardAreaShow" style="margin: 0 0 0 1rem;">牌库：{{ myCardList.length }}</h4>
     <div class="myCard" v-show="cardAreaShow">
       <v-slide-group
-        v-model="battleInfo"
+        v-model="temp"
         class="pa-4"
         center-active
         style="text-align: center"
@@ -116,6 +116,7 @@ import {buy} from "../api/get";
 export default {
   data () {
     return {
+      temp:'',
       tipsInfo:'',
       tipsInfoFlag:false,
       snackbar:false,
@@ -134,7 +135,7 @@ export default {
         balance:'',
       },
       cardAreaShow:false,
-      layer:''
+      layer:999
     }
   },
   created() {
@@ -154,12 +155,17 @@ export default {
       },800)
     },
     checkLayer(layer){
+      console.log(this.layer)
+      console.log(layer)
+      console.log(this.role)
       setTimeout(()=>{
         if (layer === 999){
+          console.log(123)
           this.$router.push({
             path:'/map'
           })
         }else if (layer != (this.role.layer + 1)){
+          console.log(456)
           this.$router.push({
             path:'/map'
           })

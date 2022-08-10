@@ -71,9 +71,6 @@ export default {
     this.initMap('0d07')
   },
   methods :{
-    checkLayer(){
-
-    },
     initMap(mapId){
       getMap(mapId).then(res =>{
         this.List = res.data.data
@@ -148,6 +145,9 @@ export default {
       }else if (item.type === 2){
         this.$router.push({
           path:'/drawCard',
+          query:{
+            layer:item.layer
+          }
         })
       }
     },
