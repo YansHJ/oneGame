@@ -27,7 +27,6 @@
         elevation="2"
         outlined
         @click="jumpToUpdate"
-        v-show="continueBtnShow"
       >更新日志</v-btn>
     </div>
 <!--      <span style="font-size: 18px;text-align: center">Powered By Yans</span>-->
