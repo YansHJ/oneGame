@@ -141,7 +141,7 @@ export default {
   created() {
     this.initRoleMethods()
     this.layer = this.$route.query.layer
-    this.checkLayer(this.layer)
+    // this.checkLayer(this.layer)
     this.getCardByNum(6)
     this.printIntroduce()
     this.myCard()
@@ -302,13 +302,13 @@ export default {
 
 <style scoped>
 .introduce {
-  margin: 2rem auto;
+  margin: 1rem auto;
   text-align: center;
 }
 .cardArea {
   margin: 0 auto ;
   width: 90%;
-  height: 15rem;
+  height: 17rem;
   display: flex;
   text-align: center;
 }
