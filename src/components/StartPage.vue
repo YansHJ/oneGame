@@ -20,7 +20,7 @@
       <v-btn
         elevation="2"
         outlined
-        @click="jumpToBattle"
+        @click="jumpToRoleManager"
         v-show="continueBtnShow"
       >继续挑战</v-btn>
       <v-btn
@@ -120,7 +120,7 @@ export default {
     typing(i,str){
       if(i<= str.length){
         this.introduceInfo = str.slice(0,i++) + "_";
-        setTimeout(() =>{this.typing(i,str);},150)
+        setTimeout(() =>{this.typing(i,str);},100)
       }else{
         this.introduceInfo = str;
         this.startButtonShow = true
@@ -132,14 +132,9 @@ export default {
       })
       localStorage.setItem("roleName",this.braveName)
     },
-    jumpToBattle(){
+    jumpToRoleManager(){
       this.$router.push({
-        path:'/battle',
-        query:{
-          monsterId:'10ac1904b1ca14b6',
-          cardNum:2,
-          layer:1
-        }
+        path:'/roleManage'
       })
     },
     jumpToUpdate(){

@@ -152,6 +152,7 @@ export default {
       endRound:true,
       steps:3,
       layer:999,
+      localMaxLayer:0,
     }
   },
   created() {
@@ -209,7 +210,7 @@ export default {
       }
     },
     defeated(msg){
-      if (msg!==''){
+      if (msg!=='' || msg != null){
         this.noticeInfo = msg
       }else {
         this.noticeInfo = '你被击败了！'
@@ -219,6 +220,11 @@ export default {
       this.attribute.baseArmor = 0
       this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
       localStorage.removeItem("localRoleId")
+      console.log(localStorage.getItem('localMaxLayer'))
+      console.log(this.role.layer)
+      if (localStorage.getItem('localMaxLayer') < this.role.layer){
+        localStorage.setItem('localMaxLayer',this.role.layer)
+      }
       setTimeout(()=>{
         this.$router.push({
           path:'/fail'
@@ -255,7 +261,7 @@ export default {
             },2500)
           }
           if (res.data.code === 999){
-            this.defeated()
+            this.defeated(res.data.msg)
           }
         })
       },4000)

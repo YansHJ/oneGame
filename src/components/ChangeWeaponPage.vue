@@ -22,17 +22,17 @@
             row>
             <v-radio
               color="secondary"
-              label="看起来不是很锋利的刀"
+              label="浪客"
               value="1"
             ></v-radio>
             <v-radio
               color="secondary"
-              label="生锈的手枪"
+              label="目前只有浪客"
               value="2"
             ></v-radio>
             <v-radio
               color="secondary"
-              label="魔法棒"
+              label="以后会更新新职业"
               value="3"
             ></v-radio>
           </v-radio-group>
@@ -78,20 +78,20 @@ export default {
     }
   },
   created() {
-    this.introduceInfo = '选择一把武器'
+    this.introduceInfo = '选择职业'
   },
   methods :{
     printIntroduce(){
       this.snackbar = true
       this.weaponShow = false
-      let str = 'emmm..虽然武器不是很好,但是也还是能用嘛,现在我来给你介绍一....啊,糟了,是附近的哥布林,这下怎么办..'
+      let str = 'emmm..这样呀,现在我来给你介绍一....啊,糟了,是附近的哥布林,这下怎么办..'
       let i = 0;
       this.typing(i,str)
     },
     typing(i,str){
       if(i<= str.length){
         this.introduceInfo = str.slice(0,i++) + "_";
-        setTimeout(() =>{this.typing(i,str);},150)
+        setTimeout(() =>{this.typing(i,str);},100)
       }else{
         this.introduceInfo = str;
         setTimeout(()=>{

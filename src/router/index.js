@@ -10,6 +10,7 @@ import DesignYourMonster from "../components/DesignYourMonster";
 import Map from "../components/MapPage";
 import TestPage from "../components/TestPage";
 import UpdateInfo from "../components/UpdateInfo";
+import RoleManagementPage from "../components/RoleManagementPage";
 
 Vue.use(Router)
 
@@ -55,6 +56,10 @@ export default new Router({
       path: '/update',
       name: 'update',
       component: UpdateInfo
+    },{
+      path: '/roleManage',
+      name: 'roleManage',
+      component: RoleManagementPage
     }
   ]
 })

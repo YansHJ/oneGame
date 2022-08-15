@@ -97,7 +97,38 @@
           </v-timeline-item>
 
         </v-timeline>
+        <!--V 0.6.6-->
+        <v-timeline
+          align-top
+          dense
+        >
+          <v-timeline-item
+            color="pink"
+            small
+          >
+            <v-row class="pt-1">
+              <v-col cols="5">
+                <strong>2022-08-15</strong>
+              </v-col>
+              <v-col>
+                <strong>V 0.6.5 Alpha</strong>
+                <div class="text-caption">
+                  1.上线"角色管理"功能
+                </div>
+                <div class="text-caption">
+                  2.修复已知问题
+                </div>
+                <div class="text-caption">
+                  3.调整初见剧情流程
+                </div>
+                <div class="text-caption">
+                  4.调整角色结构
+                </div>
+              </v-col>
+            </v-row>
+          </v-timeline-item>
 
+        </v-timeline>
 
         <!--未来-->
         <v-timeline
