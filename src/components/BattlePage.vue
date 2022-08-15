@@ -196,14 +196,36 @@ export default {
       this.noticeInfo = '你的回合'
       this.snackbar = true
       this.steps = 3
-      this.getCardByNum(2)
+      this.getCardByNum(6)
+    },
+    monsterRound(){
+      this.noticeInfo = this.monster.name + '要攻击了!'
+      this.snackbar = true
+      setTimeout(()=>{
+        underAttack(this.monster.id,this.role.id).then(res =>{
+          if (res.data.code === 200){
+            this.attribute = res.data.data.role.attribute
+            this.battleInfo = this.battleInfo + this.monster.name + "使用了" + res.data.data.monsterSkill.name +',造成了 ' + res.data.data.monsterSkill.value +  ' 伤害\n'
+            this.underAttackSnackbar = true
+            this.noticeInfo = this.monster.name + "使用了" + res.data.data.monsterSkill.name +',造成了 ' + res.data.data.monsterSkill.value +  ' 伤害'
+            this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
+            setTimeout(()=>{
+              this.finishRound(1)
+            },2500)
+          }
+          if (res.data.code === 999){
+            this.defeated(res.data.msg)
+          }
+        })
+      },4000)
     },
     finishRound(i){
       if (i === 2){
+        this.list =[]
         this.endRound = false
         this.whoRound = 2
         this.monsterRound()
-      }else if (i === 1){
+      } else if (i === 1){
         this.endRound = true
         this.whoRound = 1
         this.yourRound()
@@ -242,27 +264,6 @@ export default {
       setTimeout(()=>{
         this.$router.push({
           path:'/map'
-        })
-      },4000)
-    },
-    monsterRound(){
-      this.noticeInfo = this.monster.name + '要攻击了!'
-      this.snackbar = true
-      setTimeout(()=>{
-        underAttack(this.monster.id,this.role.id).then(res =>{
-          if (res.data.code === 200){
-            this.attribute = res.data.data.role.attribute
-            this.battleInfo = this.battleInfo + this.monster.name + "使用了" + res.data.data.monsterSkill.name +',造成了 ' + res.data.data.monsterSkill.value +  ' 伤害\n'
-            this.underAttackSnackbar = true
-            this.noticeInfo = this.monster.name + "使用了" + res.data.data.monsterSkill.name +',造成了 ' + res.data.data.monsterSkill.value +  ' 伤害'
-            this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
-            setTimeout(()=>{
-              this.finishRound(1)
-            },2500)
-          }
-          if (res.data.code === 999){
-            this.defeated(res.data.msg)
-          }
         })
       },4000)
     },
@@ -368,7 +369,8 @@ export default {
     getCardByNum(num){
       setTimeout(()=>{
         getCard(num,localStorage.getItem("localRoleId")).then(res => {
-          this.list = this.list.concat(res.data.data)
+          // this.list = this.list.concat(res.data.data)
+          this.list = res.data.data
         })
       },500)
     },
