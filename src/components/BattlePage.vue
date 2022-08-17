@@ -335,9 +335,12 @@ export default {
             this.battleInfo = this.battleInfo + localStorage.getItem('roleName') + "使用了" + item.name +',造成了' + item.value +  '伤害--\n'
           }else if (res.data.code === 666){
             //击败胜利
+            this.monster.baseHealth = 0
+            this.list = []
             this.victory(res.data.data.msg)
           }else if (res.data.code === 999){
             //失败
+            this.list = []
             this.defeated(res.data.data.msg)
           }
         })
