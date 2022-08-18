@@ -104,6 +104,7 @@ import {heal} from "../api/get";
 import {increaseArmor} from "../api/get";
 import {underAttack} from "../api/get";
 import {updateLayer} from "../api/get";
+import {refreshCardCache} from "../api/get";
 
 export default {
   data () {
@@ -228,6 +229,7 @@ export default {
       } else if (i === 1){
         this.endRound = true
         this.whoRound = 1
+        refreshCardCache(this.role.id)
         this.yourRound()
       }
     },

@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import {drawCard, getMyCard} from "../api/get";
+import {drawCard, getMyCard, refreshCardCache} from "../api/get";
 import {initRole} from "../api/post";
 import {getRole} from "../api/get";
 import {roleAddCard} from "../api/get";
@@ -173,6 +173,7 @@ export default {
       },1000)
     },
     refreshShop(price){
+      refreshCardCache(this.role.id)
       buy(this.role.id,price).then(res=>{
         if (res.data.code === 400){
           this.noticeInfo = res.data.msg
@@ -211,6 +212,7 @@ export default {
     },
     endBuy(){
       updateLayer(this.role.id)
+      refreshCardCache(this.role.id)
       setTimeout(()=>{
         this.$router.push({
           path:'/map'
@@ -257,7 +259,7 @@ export default {
     //回合初抽牌
     getCardByNum(num){
       setTimeout(()=>{
-        drawCard(num).then(res => {
+        drawCard(num,this.role.id).then(res => {
           this.list = this.list.concat(res.data.data)
         })
       },500)

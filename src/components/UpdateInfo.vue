@@ -129,6 +129,35 @@
           </v-timeline-item>
 
         </v-timeline>
+        <!--V 0.6.6-->
+        <v-timeline
+          align-top
+          dense
+        >
+          <v-timeline-item
+            color="pink"
+            small
+          >
+            <v-row class="pt-1">
+              <v-col cols="5">
+                <strong>2022-08-18</strong>
+              </v-col>
+              <v-col>
+                <strong>V 0.6.8 Alpha</strong>
+                <div class="text-caption">
+                  1.修复通过“刷新页面”来达到无损耗刷新卡牌
+                </div>
+                <div class="text-caption">
+                  2.修复战斗胜利后跳关的问题
+                </div>
+                <div class="text-caption">
+                  3.优化手牌抽取规则
+                </div>
+              </v-col>
+            </v-row>
+          </v-timeline-item>
+
+        </v-timeline>
 
         <!--未来-->
         <v-timeline

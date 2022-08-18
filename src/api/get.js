@@ -83,11 +83,12 @@ export function underAttack(monsterId,roleId) {
   })
 }
 // 卡池抽卡
-export function drawCard(quantity) {
+export function drawCard(quantity,roleId) {
   return service.get('/card/drawCard', {
     headers: { 'Content-Type': 'application/json' },
     params: {
       quantity: quantity,
+      roleId: roleId,
     }
   })
 }
@@ -99,6 +100,16 @@ export function roleAddCard(roleId,cardId) {
     params: {
       roleId: roleId,
       cardId: cardId
+    }
+  })
+}
+
+// 删除卡牌缓存
+export function refreshCardCache(roleId) {
+  return service.get('/card/refreshCardCache', {
+    headers: { 'Content-Type': 'application/json' },
+    params: {
+      roleId: roleId,
     }
   })
 }
