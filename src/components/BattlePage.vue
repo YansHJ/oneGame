@@ -55,7 +55,7 @@
 
 <!--    卡牌-->
     <div class="cardArea">
-      <h4 style="margin: 0 0 0 1rem;">行动力：{{ steps }}/3</h4>
+      <h2 style="margin: 0 0 0 1rem;color: limegreen">{{ steps }}/3</h2>
       <h4 style="margin: 0 0 0 1rem;">手牌：{{ list.length }}</h4>
         <v-slide-group
           v-model="battleInfo"
@@ -75,7 +75,7 @@
             ><v-img
               height="30px"
               src="https://s4.ax1x.com/2021/12/14/ovKMzd.jpg"
-            />
+            ><h3 style="color: limegreen;float: right;margin: 0 0.5rem 0 0">{{ item.consumes }}</h3></v-img>
               <h5 v-bind:style="item.color">{{ item.name }}</h5>
               <h3 style="color: red">{{ item.value }}</h3>
               <h6>{{ item.describe }}</h6>
@@ -320,11 +320,16 @@ export default {
         return
       }
       if (this.steps === 0){
-        this.noticeInfo = '结束回合哦！'
+        this.noticeInfo = '行动力不足！'
         this.snackbar = true
         return
       }
-      this.steps = this.steps - 1
+      if ((this.steps - item.consumes) < 0){
+        this.noticeInfo = '行动力不足！'
+        this.snackbar = true
+        return
+      }
+      this.steps = this.steps - item.consumes
       //物理攻击
       if (item.type === 1){
         attack(this.monster.id,this.role.id,item.identifier).then(res => {
