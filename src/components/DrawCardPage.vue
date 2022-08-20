@@ -34,10 +34,7 @@
                 width="115"
                 @click="trade(item,n)"
               >
-                <v-img
-                  height="30px"
-                  src="https://s4.ax1x.com/2021/12/14/ovKMzd.jpg"
-                />
+                <CardImg :consumes="item.consumes"></CardImg>
                 <h5 v-bind:style="item.color">{{ item.name }}</h5>
                 <h3 style="color: red">{{ item.value }}</h3>
                 <h6>{{ item.describe }}</h6>
@@ -90,10 +87,7 @@
               height="11rem"
               width="115"
               @click=""
-            ><v-img
-              height="30px"
-              src="https://s4.ax1x.com/2021/12/14/ovKMzd.jpg"
-            />
+            ><CardImg :consumes="item.consumes"></CardImg>
               <h5 v-bind:style="item.color">{{ item.name }}</h5>
               <h3 style="color: red">{{ item.value }}</h3>
               <h6>{{ item.describe }}</h6>
@@ -112,8 +106,10 @@ import {getRole} from "../api/get";
 import {roleAddCard} from "../api/get";
 import {updateLayer} from "../api/get";
 import {buy} from "../api/get";
+import CardImg from "./temp/CardImg";
 
 export default {
+  components: {CardImg},
   data () {
     return {
       temp:'',

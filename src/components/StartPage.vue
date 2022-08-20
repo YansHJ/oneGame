@@ -9,7 +9,7 @@
     <div class="startPage" v-show="startPageShow">
     <div class="gameName">
       <span style="font-size: 30px">《One Game》</span>
-      <span style="font-size: 14px">V 0.6.8 Alpha测试版</span>
+      <span style="font-size: 14px">V 0.6.9 Alpha测试版</span>
     </div>
     <div class="startButton">
       <v-btn
@@ -27,7 +27,7 @@
         elevation="2"
         outlined
         @click="jumpToUpdate"
-      >更新日志</v-btn>
+      >更新日志<h5 style="color: red;"> New</h5></v-btn>
     </div>
 <!--      <span style="font-size: 18px;text-align: center">Powered By Yans</span>-->
     </div>

@@ -129,7 +129,7 @@
           </v-timeline-item>
 
         </v-timeline>
-        <!--V 0.6.6-->
+        <!--V 0.6.8-->
         <v-timeline
           align-top
           dense
@@ -152,6 +152,32 @@
                 </div>
                 <div class="text-caption">
                   3.优化手牌抽取规则
+                </div>
+              </v-col>
+            </v-row>
+          </v-timeline-item>
+
+        </v-timeline>
+        <!--V 0.6.9-->
+        <v-timeline
+          align-top
+          dense
+        >
+          <v-timeline-item
+            color="pink"
+            small
+          >
+            <v-row class="pt-1">
+              <v-col cols="5">
+                <strong>2022-08-20</strong>
+              </v-col>
+              <v-col>
+                <strong>V 0.6.9 Alpha</strong>
+                <div class="text-caption">
+                  1.优化展示元素
+                </div>
+                <div class="text-caption">
+                  2.优化战斗界面，新增生硬的伤害动画(待后期优化)
                 </div>
               </v-col>
             </v-row>

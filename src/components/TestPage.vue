@@ -1,19 +1,20 @@
 <template>
   <div>
-    <div class="roll-out-left block" v-show="show">
-
-    </div>
-    <v-btn @click="show = !show">123</v-btn>
+    123
+    <CardImg :consumes="consumes"></CardImg>
   </div>
 
 </template>
 
 <script>
+import CardImg from "./temp/CardImg";
 export default {
   name: "TestPage",
+  components: {CardImg},
   data(){
     return{
-      show:true
+      show:true,
+      consumes: 123
     }
   }
 }
