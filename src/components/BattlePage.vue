@@ -348,7 +348,7 @@ export default {
             this.monsterAbsoluteHp = this.monster.baseHealth / (this.monster.maxHealth/100)
             this.battleInfo = this.battleInfo + localStorage.getItem('roleName') + "使用了" + item.name +',造成了' + item.value +  '伤害--\n'
             this.monsterDamageShow = true
-            this.monsterDamage = item.value
+            this.monsterDamage = res.data.data.card.value
             setTimeout(()=>{
               this.monsterDamageShow = false
             },1000)
