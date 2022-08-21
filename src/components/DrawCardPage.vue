@@ -170,7 +170,7 @@ export default {
     },
     refreshShop(price){
       refreshCardCache(this.role.id)
-      buy(this.role.id,price).then(res=>{
+      buy(this.role.id,9999).then(res=>{
         if (res.data.code === 400){
           this.noticeInfo = res.data.msg
           this.snackbar = true
@@ -186,7 +186,7 @@ export default {
       })
     },
     trade(item,n){
-      buy(this.role.id,item.price).then(res=>{
+      buy(this.role.id,item.identifier).then(res=>{
         if (res.data.code === 400){
           this.noticeInfo = res.data.msg
           this.snackbar = true
@@ -198,7 +198,11 @@ export default {
           this.role.balance = res.data.data.balance
           //删牌
           this.list.splice(n,1)
-          this.addCard(item)
+          console.log(item.cardValueType)
+          console.log(item)
+          if (item.cardValueType !== 3){
+            this.addCard(item)
+          }
           setTimeout(()=>{
             this.myCardList = []
             this.myCard()

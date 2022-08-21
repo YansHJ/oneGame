@@ -184,7 +184,48 @@
           </v-timeline-item>
 
         </v-timeline>
+        <!--V 0.7.0-->
+        <v-timeline
+          align-top
+          dense
+        >
+          <v-timeline-item
+            color="pink"
+            small
+          >
+            <v-row class="pt-1">
+              <v-col cols="5">
+                <strong>2022-08-21</strong>
+              </v-col>
+              <v-col>
+                <strong>V 0.7.0 Alpha</strong>
+                <div class="text-caption">
+                  1.优化服务器代码
+                </div>
+                <div class="text-caption" style="color: red">
+                  2.新增消耗卡"参悟"
+                </div>
+                <div class="text-caption">
+                  3.提升初始角色血量：10 -> 30
+                </div>
+                <div class="text-caption">
+                  4.加强部分关卡怪物
+                </div>
+                <div class="text-caption">
+                  5.移除普通卡：炼狱,炎龙,神之握
+                </div>
+              </v-col>
+            </v-row>
+          </v-timeline-item>
 
+        </v-timeline>
+
+
+        <v-divider></v-divider>
+        <v-divider></v-divider>
+        <v-divider></v-divider>
+        <v-divider></v-divider>
+        <v-divider></v-divider>
         <!--未来-->
         <v-timeline
           align-top

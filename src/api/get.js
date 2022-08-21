@@ -143,14 +143,14 @@ export function getMyCard(roleId) {
   })
 }
 //buy
-export function buy (roleId,price) {
+export function buy (roleId,cardId) {
   return service.get('/trade/decrease', {
     headers: {
       'Content-Type': 'application/json'
     },
     params: {
       roleId: roleId,
-      price: price
+      cardId: cardId
     }
   })
 }

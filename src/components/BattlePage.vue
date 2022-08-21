@@ -367,8 +367,8 @@ export default {
       //回血
       if (item.type === 2){
         heal(this.role.id,item.identifier).then(res => {
-          this.role = res.data.data
-          this.attribute = res.data.data.attribute
+          this.role = res.data.data.role
+          this.attribute = res.data.data.role.attribute
           this.battleInfo = this.battleInfo + localStorage.getItem('roleName') + "使用了" + item.name +',恢复了' + item.value +  '生命--\n'
           this.roleAbsoluteHp = this.attribute.baseHealth / (this.attribute.maxHealth/100)
         })
