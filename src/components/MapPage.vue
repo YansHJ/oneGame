@@ -12,8 +12,9 @@
       {{ noticeInfo }}
     </v-snackbar>
     <div class="Map">
-      <div class="mapList" v-for="(item,index) in List" :key="index">
-        <div class="maps" v-for="(innerItem,index) in item" :key="index" >
+<!--      <div class="mapList" v-for="(item,index) in List" :key="index">-->
+      <div class="mapList">
+        <div class="maps" v-for="(innerItem,index) in List" :key="index" >
           <v-card
             class="ma-4"
             height="6rem"
@@ -25,13 +26,14 @@
           >
             <h4>{{ innerItem.number }}</h4>
             <h6>{{ innerItem.describe }}</h6>
-            <h6 style="color: red" v-if="innerItem.layer === role.layer"> 当前在这里 </h6>
-            <img src="../assets/iconPng/battle.png" style="width: 2rem;height: 2rem" v-if="innerItem.type === 0">
-            <img src="../assets/iconPng/clover.png" style="width: 2rem;height: 2rem" v-if="innerItem.type === 2">
-            <img src="../assets/iconPng/ghost.png" style="width: 2rem;height: 2rem" v-if="innerItem.type === 1">
+<!--            <h6 style="color: red" v-if="innerItem.layer === role.layer"> 当前在这里 </h6>-->
+            <img src="../assets/iconPng/battle.png" style="width: 2rem;height: 2rem" v-if="innerItem.type === 1">
+            <img src="../assets/iconPng/clover.png" style="width: 2rem;height: 2rem" v-if="innerItem.type === 0">
+            <img src="../assets/iconPng/ghost.png" style="width: 2rem;height: 2rem" v-if="innerItem.type === 2">
           </v-card>
         </div>
       </div>
+<!--      </div>-->
       <!--      <Map :list="List"></Map>-->
     </div>
 
@@ -68,11 +70,14 @@ export default {
   created() {
     this.printIntroduce()
     this.initRoleMethods()
-    this.initMap('0d07')
+    setTimeout(()=>{
+      this.initMap(this.role.id)
+    },2000)
   },
   methods :{
-    initMap(mapId){
-      getMap(mapId).then(res =>{
+    initMap(roleId){
+      console.log('11111:' + roleId)
+      getMap(roleId).then(res =>{
         this.List = res.data.data
       })
     },
@@ -130,10 +135,10 @@ export default {
     },
     //选择关卡
     selectLevel(item){
-      if (item.layer !== this.role.layer + 1){
+      if (item.layer !== this.role.layer){
         this.noticeInfo = '不可以跳关哦'
         this.snackbar = true
-      }else if (item.type === 0 || item.type === 1){
+      }else if (item.type === 1 || item.type === 2 || item.type === 3){
         this.$router.push({
           path:'/battle',
           query:{
@@ -142,7 +147,7 @@ export default {
             layer:item.layer
           }
         })
-      }else if (item.type === 2){
+      }else if (item.type === 0){
         this.$router.push({
           path:'/drawCard',
           query:{
@@ -185,6 +190,7 @@ export default {
   height: 100%;
 }
 .mapList {
+  margin: 18rem 0 0 0;
   display:flex;
   align-items: center;
   justify-content:center;
@@ -192,8 +198,8 @@ export default {
   height:auto;
 }
 .maps {
-  width:10rem;
-  height:7rem;
+  width:6.5rem;
+  height:6rem;
   text-align: center;
 }
 </style>

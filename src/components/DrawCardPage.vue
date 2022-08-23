@@ -160,7 +160,7 @@ export default {
           this.$router.push({
             path:'/map'
           })
-        }else if (layer != (this.role.layer + 1)){
+        }else if (layer != (this.role.layer)){
           console.log(456)
           this.$router.push({
             path:'/map'

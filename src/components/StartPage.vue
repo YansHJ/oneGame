@@ -9,7 +9,7 @@
     <div class="startPage" v-show="startPageShow">
     <div class="gameName">
       <span style="font-size: 30px">《One Game》</span>
-      <span style="font-size: 14px">V 0.7.0 Alpha测试版</span>
+      <span style="font-size: 14px">V 0.7.1 Alpha测试版</span>
     </div>
     <div class="startButton">
       <v-btn

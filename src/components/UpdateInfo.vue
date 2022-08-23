@@ -219,9 +219,34 @@
           </v-timeline-item>
 
         </v-timeline>
+        <!--V 0.7.1-->
+        <v-timeline
+          align-top
+          dense
+        >
+          <v-timeline-item
+            color="pink"
+            small
+          >
+            <v-row class="pt-1">
+              <v-col cols="5">
+                <strong>2022-08-21</strong>
+              </v-col>
+              <v-col>
+                <strong>V 0.7.0 Alpha</strong>
+                <div class="text-caption">
+                  1.重构关卡结构,改为随机生成关卡规则
+                </div>
+                <div class="text-caption" style="color: red">
+                  2.新增特殊卡"盾击"
+                </div>
+              </v-col>
+            </v-row>
+          </v-timeline-item>
+
+        </v-timeline>
 
 
-        <v-divider></v-divider>
         <v-divider></v-divider>
         <v-divider></v-divider>
         <v-divider></v-divider>

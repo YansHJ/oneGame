@@ -114,15 +114,26 @@ export function refreshCardCache(roleId) {
   })
 }
 
+// // 获取地图
+// export function getMap(id) {
+//   return service.get('/gameLevel/getMap', {
+//     headers: { 'Content-Type': 'application/json' },
+//     params: {
+//       id:id
+//     }
+//   })
+// }
+
 // 获取地图
-export function getMap(id) {
-  return service.get('/gameLevel/getMap', {
+export function getMap(roleId) {
+  return service.get('/gameLevel/initRandomMap', {
     headers: { 'Content-Type': 'application/json' },
     params: {
-      id:id
+      roleId: roleId
     }
   })
 }
+
 // 过关增加关卡
 export function updateLayer(roleId) {
   return service.get('/playerRole/updateLayer', {
