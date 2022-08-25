@@ -5,6 +5,7 @@
       <div class="introduceInfo">
         <span style="font-size: 20px;padding: 0 30px 0 30px">{{introduceInfo}}</span>
       </div>
+      <span style="font-size: 30px;">第{{ List[0].layer }}层</span>
     </div>
     <v-snackbar
       v-model="snackbar"
